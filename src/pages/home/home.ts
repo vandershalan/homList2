@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, ActionSheetController } from 'ionic-angular';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Observable } from "rxjs/Observable";
+import { ListPage } from "../list/list"
 
 @Component({
   selector: 'page-home',
@@ -11,13 +12,13 @@ export class HomePage {
 
     listsList: AngularFireList<any>;
     lists: Observable<any[]>;
-    
+
     constructor(public navCtrl: NavController, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase, public actionSheetCtrl: ActionSheetController) {
         this.listsList = afDatabase.list('/lists');
         this.lists = this.listsList.valueChanges();
     }
-    
-    
+
+
     addList(){
         let prompt = this.alertCtrl.create({
             title: 'List Name',
@@ -39,7 +40,7 @@ export class HomePage {
                 text: 'Save',
                 handler: data => {
                   const newListRef = this.listsList.push({});
-         
+
                   newListRef.set({
                     id: newListRef.key,
                     title: data.title
@@ -84,7 +85,7 @@ export class HomePage {
         this.listsList.remove(listId);
     }
 
-    
+
     updateList(listId, listTitle){
       let prompt = this.alertCtrl.create({
         title: 'List Name',
@@ -114,5 +115,9 @@ export class HomePage {
         ]
       });
       prompt.present();
+    }
+
+    goToListPage(list) {
+      this.navCtrl.push(ListPage, list);
     }
 }

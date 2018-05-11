@@ -14,7 +14,8 @@
 <ion-content padding>
 	<ion-list reorder="true">
 		<ion-item-sliding #item *ngFor="let list of lists | async">
-  			<ion-item (click)="showOptions(list.id, list.title)">
+  			<!--<ion-item (click)="showOptions(list.id, list.title)">-->
+  			<ion-item (click)="goToListPage(list)">
     			{{list.title}}
   			</ion-item>
   			<ion-item-options side="left">
