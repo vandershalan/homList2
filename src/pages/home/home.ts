@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, ActionSheetController } from 'ionic-angular';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import {NavController, AlertController, ActionSheetController, NavParams} from 'ionic-angular';
+import {AngularFireDatabase, AngularFireList, AngularFireObject} from 'angularfire2/database';
 import { Observable } from "rxjs/Observable";
-import { ListPage } from "../list/list"
+import { ItemPage } from "../item/item"
 
 @Component({
   selector: 'page-home',
@@ -10,23 +10,31 @@ import { ListPage } from "../list/list"
 })
 export class HomePage {
 
-    listsList: AngularFireList<any>;
-    lists: Observable<any[]>;
+    itemsList: AngularFireList<any>;
+    items: Observable<any[]>;
+    item: any
 
-    constructor(public navCtrl: NavController, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase, public actionSheetCtrl: ActionSheetController) {
-        this.listsList = afDatabase.list('/lists');
-        this.lists = this.listsList.valueChanges();
-    }
+    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase, public actionSheetCtrl: ActionSheetController) {
+        this.item = navParams.data;
+        const itemId = this.item.id;
+        let firePath = '/items';
+        if (itemId != "ROOT") {
+            firePath += "/" + itemId + "/items";
+        }
+        this.itemsList = afDatabase.list(firePath);
+        this.items = this.itemsList.valueChanges();
+        console.log("firePath: " + firePath);
+        }
 
 
     addList(){
         let prompt = this.alertCtrl.create({
-            title: 'List Name',
-            message: "Enter a name for this new list",
+            title: 'Item Name',
+            message: "Enter a name for this new item",
             inputs: [
               {
-                name: 'title',
-                placeholder: 'Title'
+                name: 'name',
+                placeholder: 'Name'
               },
             ],
             buttons: [
@@ -39,11 +47,11 @@ export class HomePage {
               {
                 text: 'Save',
                 handler: data => {
-                  const newListRef = this.listsList.push({});
+                  const newListRef = this.itemsList.push({});
 
                   newListRef.set({
                     id: newListRef.key,
-                    title: data.title
+                    name: data.name
                   });
                 }
               }
@@ -53,9 +61,9 @@ export class HomePage {
     }
 
 
-    showOptions(listId, listTitle) {
+    showOptions(listId, listName) {
       let actionSheet = this.actionSheetCtrl.create({
-        title: 'What do you want to do with: ' + listTitle + '?',
+        title: 'What do you want to do with: ' + listName + '?',
         buttons: [
           {
             text: 'Delete List',
@@ -64,9 +72,9 @@ export class HomePage {
               this.removeList(listId);
             }
           },{
-            text: 'Update title',
+            text: 'Update name',
             handler: () => {
-              this.updateList(listId, listTitle);
+              this.updateList(listId, listName);
             }
           },{
             text: 'Cancel',
@@ -82,19 +90,19 @@ export class HomePage {
 
 
     removeList(listId: string){
-        this.listsList.remove(listId);
+        this.itemsList.remove(listId);
     }
 
 
-    updateList(listId, listTitle){
+    updateList(listId, listName){
       let prompt = this.alertCtrl.create({
         title: 'List Name',
         message: "Update the name for this list",
         inputs: [
           {
-            name: 'title',
-            placeholder: 'Title',
-            value: listTitle
+            name: 'name',
+            placeholder: 'Name',
+            value: listName
           },
         ],
         buttons: [
@@ -107,8 +115,8 @@ export class HomePage {
           {
             text: 'Save',
             handler: data => {
-              this.listsList.update(listId, {
-                title: data.title
+              this.itemsList.update(listId, {
+                name: data.name
               });
             }
           }
@@ -117,7 +125,7 @@ export class HomePage {
       prompt.present();
     }
 
-    goToListPage(list) {
-      this.navCtrl.push(ListPage, list);
+    goToListPage(item) {
+      this.navCtrl.push(HomePage, item);
     }
 }
