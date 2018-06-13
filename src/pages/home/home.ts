@@ -17,10 +17,7 @@ export class HomePage {
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase, public actionSheetCtrl: ActionSheetController) {
         this.item = navParams.data;
         const itemId = this.item.id;
-        let firePath = '/items';
-        if (itemId != "ROOT") {
-            firePath += "/" + itemId + "/items";
-        }
+        const firePath = "/items/" + itemId + "/items";
         this.itemsList = afDatabase.list(firePath);
         this.items = this.itemsList.valueChanges();
         console.log("firePath: " + firePath);
@@ -128,4 +125,7 @@ export class HomePage {
     goToListPage(item) {
       this.navCtrl.push(HomePage, item);
     }
-}
+
+    executed(item) {
+        console.log("Item name: " + item.name);
+    }}
