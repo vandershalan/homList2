@@ -17,10 +17,10 @@
   			<!--<ion-item (click)="showOptions(list.id, list.title)">-->
 			<ion-item (click)="goToListPage(item)">
 				<ion-icon *ngIf="item.type == 'list'" name="list" item-start></ion-icon>
-				<ion-icon *ngIf="item.type == 'item'" item-start></ion-icon>
+				<ion-icon *ngIf="item.type == 'item'" name="pricetag" item-start></ion-icon>
 				{{item.name}}
   			</ion-item>
-  			<ion-item-options side="left" (ionSwipe)="executed(item)">
+  			<ion-item-options *ngIf="item.type == 'item'" side="left" (ionSwipe)="executed(item)">
       			<button ion-button expandable (click)="executed(item)">Zrobione</button>
     		</ion-item-options>
     		<ion-item-options side="right">
