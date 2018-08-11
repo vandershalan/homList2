@@ -48,7 +48,8 @@ export class HomePage {
 
                   newListRef.set({
                     id: newListRef.key,
-                    name: data.name
+                    name: data.name,
+                      type: "item"
                   });
                 }
               }
