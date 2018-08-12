@@ -1,31 +1,44 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-		{{item.name}}
-    </ion-title>
-    <ion-buttons end>
-  	<button ion-button icon-only (click)="addList()">
-    	<ion-icon name="add"></ion-icon>
-  	</button>
-</ion-buttons>
-  </ion-navbar>
+    <ion-navbar>
+        <button ion-button icon-only menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            {{item.name}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only>
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-	<ion-list reorder="true">
-		<ion-item-sliding *ngFor="let item of items | async" >
-  			<!--<ion-item (click)="showOptions(list.id, list.title)">-->
-			<ion-item (click)="goToListPage(item)">
-				<ion-icon *ngIf="item.type == 'list'" name="list" item-start></ion-icon>
-				<ion-icon *ngIf="item.type == 'item'" name="pricetag" item-start></ion-icon>
-				{{item.name}}
-  			</ion-item>
-  			<ion-item-options *ngIf="item.type == 'item'" side="left" (ionSwipe)="executed(item)">
-      			<button ion-button expandable (click)="executed(item)">Zrobione</button>
-    		</ion-item-options>
-    		<ion-item-options side="right">
-      			<button ion-button (click)="unread(item)">Usuń</button>
-    		</ion-item-options>
-		</ion-item-sliding>
-	</ion-list>
+
+    <ion-row align-items-center nowrap>
+        <ion-searchbar [(ngModel)]="searchValue">
+        </ion-searchbar>
+        <button ion-button icon-only (click)="goToNewItemPage(searchValue)">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-row>
+
+    <ion-list reorder="true">
+        <ion-item-sliding *ngFor="let item of items | async">
+            <!--<ion-item (click)="showOptions(list.id, list.title)">-->
+            <ion-item (click)="goToListPage(item)">
+                <ion-icon *ngIf="item.type == 'list'" name="list" item-start></ion-icon>
+                <ion-icon *ngIf="item.type == 'item'" name="pricetag" item-start></ion-icon>
+                {{item.name}}
+            </ion-item>
+            <ion-item-options *ngIf="item.type == 'item'" side="left" (ionSwipe)="executed(item)">
+                <button ion-button expandable (click)="executed(item)">Zrobione</button>
+            </ion-item-options>
+            <ion-item-options side="right">
+                <button ion-button (click)="unread(item)">Usuń</button>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+
 </ion-content>

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ActionSheetController, AlertController, NavController, NavParams} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {Observable} from "rxjs/Observable";
+import {NewItemPage} from "../newItem/newItem";
 
 @Component({
     selector: 'page-home',
@@ -11,7 +12,8 @@ export class HomePage {
 
     itemsList: AngularFireList<any>;
     items: Observable<any[]>;
-    item: any
+    item: any;
+    searchValue: any;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase, public actionSheetCtrl: ActionSheetController) {
         this.item = navParams.data;
@@ -23,7 +25,7 @@ export class HomePage {
     }
 
 
-    addList() {
+    addItem() {
         let prompt = this.alertCtrl.create({
             title: 'Item Name',
             message: "Enter a name for this new item",
@@ -120,6 +122,10 @@ export class HomePage {
             ]
         });
         prompt.present();
+    }
+
+    goToNewItemPage(itemName) {
+        this.navCtrl.push(NewItemPage, itemName);
     }
 
     goToListPage(item) {
