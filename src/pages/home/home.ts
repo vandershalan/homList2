@@ -125,6 +125,7 @@ export class HomePage {
     }
 
     goToNewItemPage(itemName) {
+        if (itemName == null) itemName = "";
         this.navCtrl.push(NewItemPage, itemName);
     }
 

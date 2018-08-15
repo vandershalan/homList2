@@ -1,9 +1,37 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>{{itemName}}</ion-title>
+        <ion-title>New</ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+
+    <ion-list>
+        <ion-item>
+            <ion-label floating>Name</ion-label>
+            <ion-input #nameInput type="text" value="{{itemName}}"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Description</ion-label>
+            <ion-input type="text" value=""></ion-input>
+        </ion-item>
+
+    </ion-list>
+
+    <div padding>
+        <p>
+            <button ion-button color="primary" block>
+                <ion-icon name="pricetag" padding></ion-icon>
+                Add as Item
+            </button>
+        </p>
+        <p>
+            <button ion-button color="primary" block>
+                <ion-icon name="list" padding></ion-icon>
+                Add as List
+            </button>
+        </p>
+    </div>
 
 </ion-content>
