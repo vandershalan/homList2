@@ -1,5 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
+import {AngularFireList} from "angularfire2/database";
 
 @Component({
     selector: 'new-item',
@@ -8,10 +9,25 @@ import {NavController, NavParams} from 'ionic-angular';
 export class NewItemPage {
 
     itemName: any;
+    itemsList: AngularFireList<any>;
+
     @ViewChild('nameInput') nameInput;
 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
-        this.itemName = navParams.data;
+        this.itemName = navParams.get('itemName');
+        this.itemsList = navParams.get('itemsList');
+    }
+
+    addItem() {
+        const newListRef = this.itemsList.push({});
+
+        newListRef.set({
+            id: newListRef.key,
+            name: this.itemName,
+            type: "item"
+        });
+
+        this.navCtrl.pop();
     }
 
     ionViewDidLoad() {

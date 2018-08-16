@@ -9,7 +9,7 @@
     <ion-list>
         <ion-item>
             <ion-label floating>Name</ion-label>
-            <ion-input #nameInput type="text" value="{{itemName}}"></ion-input>
+            <ion-input #nameInput type="text" [(ngModel)]="itemName"></ion-input>
         </ion-item>
 
         <ion-item>
@@ -21,7 +21,7 @@
 
     <div padding>
         <p>
-            <button ion-button color="primary" block>
+            <button ion-button color="primary" block (click)="addItem()">
                 <ion-icon name="pricetag" padding></ion-icon>
                 Add as Item
             </button>
