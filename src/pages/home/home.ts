@@ -11,14 +11,16 @@ import {NewItemPage} from "../newItem/newItem";
 export class HomePage {
 
     itemsList: AngularFireList<any>;
+    allLists: AngularFireList<any>;
     items: Observable<any[]>;
     item: any;
     searchValue: any;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase, public actionSheetCtrl: ActionSheetController) {
         this.item = navParams.data;
-        const itemId = this.item.id;
-        const firePath = "/lists/" + itemId + "/items";
+        let firePath = "/lists";
+        this.allLists = afDatabase.list(firePath);
+        firePath += "/" + this.item.id + "/items";
         this.itemsList = afDatabase.list(firePath);
         this.items = this.itemsList.valueChanges();
         console.log("firePath: " + firePath);
@@ -126,7 +128,7 @@ export class HomePage {
 
     goToNewItemPage(itemName) {
         if (itemName == null) itemName = "";
-        this.navCtrl.push(NewItemPage, {itemName: itemName, itemsList: this.itemsList});
+        this.navCtrl.push(NewItemPage, {itemName: itemName, itemsList: this.itemsList, allLists: this.allLists});
     }
 
     goToListPage(item) {
