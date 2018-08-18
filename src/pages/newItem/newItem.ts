@@ -25,7 +25,8 @@ export class NewItemPage {
         newItemRef.set({
             id: newItemRef.key,
             name: this.itemName,
-            type: "item"
+            type: "item",
+            active: "true"
         });
 
         this.navCtrl.pop();
@@ -37,7 +38,8 @@ export class NewItemPage {
         newListRef.set({
             id: newListRef.key,
             name: this.itemName,
-            type: "list"
+            type: "list",
+            active: "true"
         });
 
         const newItemRef = this.itemsList.push({});
@@ -45,7 +47,8 @@ export class NewItemPage {
             id: newItemRef.key,
             name: this.itemName,
             type: "list",
-            listRef: newListRef.key
+            listRef: newListRef.key,
+            active: "true"
         });
 
         this.navCtrl.pop();
