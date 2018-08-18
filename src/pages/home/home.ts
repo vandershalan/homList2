@@ -70,7 +70,7 @@ export class HomePage {
                     text: 'Delete List',
                     role: 'destructive',
                     handler: () => {
-                        this.removeList(listId);
+                        this.removeItem(listId);
                     }
                 }, {
                     text: 'Update name',
@@ -90,8 +90,8 @@ export class HomePage {
     }
 
 
-    removeList(listId: string) {
-        this.itemsList.remove(listId);
+    removeItem(item) {
+        this.itemsList.remove(item);
     }
 
 
@@ -137,5 +137,6 @@ export class HomePage {
 
     executed(item) {
         console.log("Item name: " + item.name);
+        item.active = false;
     }
 }
