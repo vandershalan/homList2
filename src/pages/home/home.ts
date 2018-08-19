@@ -136,7 +136,8 @@ export class HomePage {
     }
 
     executed(item) {
-        console.log("Item name: " + item.name);
+        console.log("item: " + JSON.stringify(item));
         item.active = false;
+        this.itemsList.update(item.id, item);
     }
 }

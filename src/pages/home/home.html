@@ -45,7 +45,7 @@
         <ng-container *ngFor="let item of items | async">
             <ion-item-sliding *ngIf="!item.active">
                 <!--<ion-item (click)="showOptions(list.id, list.title)">-->
-                <ion-item  color="light" (click)="goToListPage(item)">
+                <ion-item  class="item-done" (click)="goToListPage(item)">
                     <ion-icon *ngIf="item.type == 'list'" name="list" item-start></ion-icon>
                     <ion-icon *ngIf="item.type == 'item'" name="pricetag" item-start></ion-icon>
                     {{item.name}}
