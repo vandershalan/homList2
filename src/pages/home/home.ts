@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
-import {ActionSheetController, AlertController, NavController, NavParams} from 'ionic-angular';
+import {ActionSheetController, AlertController, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {Observable} from "rxjs/Observable";
 import {NewItemPage} from "../newItem/newItem";
+import {OptionsComponent} from "../../components/options/options";
 
 @Component({
     selector: 'page-home',
@@ -16,7 +17,7 @@ export class HomePage {
     item: any;
     searchValue: any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase, public actionSheetCtrl: ActionSheetController) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase, public popoverCtrl: PopoverController, public actionSheetCtrl: ActionSheetController) {
         this.item = navParams.data;
         let firePath = "/lists";
         this.allLists = afDatabase.list(firePath);
@@ -61,8 +62,14 @@ export class HomePage {
         prompt.present();
     }
 
+    showOptions(myEvent) {
+        let popover = this.popoverCtrl.create(OptionsComponent);
+        popover.present({
+            ev: myEvent
+        });
+    }
 
-    showOptions(listId, listName) {
+    show2Options(listId, listName) {
         let actionSheet = this.actionSheetCtrl.create({
             title: 'What do you want to do with: ' + listName + '?',
             buttons: [
