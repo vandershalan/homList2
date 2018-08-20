@@ -17,6 +17,9 @@ export class HomePage {
     item: any;
     searchValue: any;
 
+    showActive: boolean = true;
+    showDone: boolean;
+
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase, public popoverCtrl: PopoverController, public actionSheetCtrl: ActionSheetController) {
         this.item = navParams.data;
         let firePath = "/lists";
@@ -28,72 +31,17 @@ export class HomePage {
     }
 
 
-    addItem() {
-        let prompt = this.alertCtrl.create({
-            title: 'Item Name',
-            message: "Enter a name for this new item",
-            inputs: [
-                {
-                    name: 'name',
-                    placeholder: 'Name'
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Cancel',
-                    handler: data => {
-                        console.log('Cancel clicked');
-                    }
-                },
-                {
-                    text: 'Save',
-                    handler: data => {
-                        const newListRef = this.itemsList.push({});
-
-                        newListRef.set({
-                            id: newListRef.key,
-                            name: data.name,
-                            type: "item"
-                        });
-                    }
-                }
-            ]
-        });
-        prompt.present();
-    }
-
     showOptions(myEvent) {
-        let popover = this.popoverCtrl.create(OptionsComponent);
+        const popover = this.popoverCtrl.create(OptionsComponent, {showActive: this.showActive, showDone: this.showDone});
+        popover.onDidDismiss((optionsData) => {
+            if (optionsData) {
+                this.showActive = optionsData.showActive;
+                this.showDone = optionsData.showDone;
+            }
+        })
         popover.present({
             ev: myEvent
         });
-    }
-
-    show2Options(listId, listName) {
-        let actionSheet = this.actionSheetCtrl.create({
-            title: 'What do you want to do with: ' + listName + '?',
-            buttons: [
-                {
-                    text: 'Delete List',
-                    role: 'destructive',
-                    handler: () => {
-                        this.removeItem(listId);
-                    }
-                }, {
-                    text: 'Update name',
-                    handler: () => {
-                        this.updateList(listId, listName);
-                    }
-                }, {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    handler: () => {
-                        console.log('Cancel clicked');
-                    }
-                }
-            ]
-        });
-        actionSheet.present();
     }
 
 
@@ -133,14 +81,17 @@ export class HomePage {
         prompt.present();
     }
 
+
     goToNewItemPage(itemName) {
         if (itemName == null) itemName = "";
         this.navCtrl.push(NewItemPage, {itemName: itemName, itemsList: this.itemsList, allLists: this.allLists});
     }
 
+
     goToListPage(item) {
         this.navCtrl.push(HomePage, item);
     }
+
 
     executed(item) {
         console.log("item: " + JSON.stringify(item));
