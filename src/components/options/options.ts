@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {NavParams, ViewController} from "ionic-angular";
+import {ListOptions} from "../../model/listOptions";
 
 @Component({
     selector: 'options',
@@ -7,16 +8,14 @@ import {NavParams, ViewController} from "ionic-angular";
 })
 export class OptionsComponent {
 
-    showActive: boolean;
-    showDone: boolean;
+    listOptions: ListOptions;
 
     constructor(public viewCtrl: ViewController, public navParams: NavParams) {
-        this.showActive = navParams.get("showActive");
-        this.showDone = navParams.get("showDone");
+        this.listOptions = navParams.get("listOptions");
     }
 
     close() {
-        this.viewCtrl.dismiss({showActive: this.showActive, showDone: this.showDone});
+        this.viewCtrl.dismiss({listOptions: this.listOptions});
     }
 
     onDidDismiss() {

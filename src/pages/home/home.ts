@@ -4,6 +4,7 @@ import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {Observable} from "rxjs/Observable";
 import {NewItemPage} from "../newItem/newItem";
 import {OptionsComponent} from "../../components/options/options";
+import {ListOptions} from "../../model/listOptions";
 
 @Component({
     selector: 'page-home',
@@ -17,26 +18,28 @@ export class HomePage {
     item: any;
     searchValue: any;
 
-    showActive: boolean = true;
-    showDone: boolean;
+    listOptions: ListOptions = new ListOptions();
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase, public popoverCtrl: PopoverController, public actionSheetCtrl: ActionSheetController) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase,
+                public popoverCtrl: PopoverController, public actionSheetCtrl: ActionSheetController) {
+
         this.item = navParams.data;
         let firePath = "/lists";
         this.allLists = afDatabase.list(firePath);
         firePath += "/" + this.item.id + "/items";
         this.itemsList = afDatabase.list(firePath);
         this.items = this.itemsList.valueChanges();
+
         console.log("firePath: " + firePath);
+        console.log(JSON.stringify(this.listOptions));
     }
 
 
     showOptions(myEvent) {
-        const popover = this.popoverCtrl.create(OptionsComponent, {showActive: this.showActive, showDone: this.showDone});
+        const popover = this.popoverCtrl.create(OptionsComponent, {listOptions: this.listOptions});
         popover.onDidDismiss((optionsData) => {
             if (optionsData) {
-                this.showActive = optionsData.showActive;
-                this.showDone = optionsData.showDone;
+                this.listOptions = optionsData.listOptions;
             }
         })
         popover.present({

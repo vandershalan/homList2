@@ -11,6 +11,7 @@ import {OptionsComponent} from "../components/options/options";
 // Import the AF2 Module
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
+import {ListOptions} from "../model/listOptions";
 
 // AF2 Settings
 export const firebaseConfig = {

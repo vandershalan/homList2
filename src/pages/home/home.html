@@ -26,7 +26,7 @@
 
     <ion-list reorder="true">
         <ng-container *ngFor="let item of items | async">
-            <ion-item-sliding *ngIf="item.active && showActive">
+            <ion-item-sliding *ngIf="item.active && listOptions.showActive">
                 <!--<ion-item (click)="showOptions(list.id, list.title)">-->
                 <ion-item (click)="goToListPage(item)">
                     <ion-icon *ngIf="item.type == 'list'" name="list" item-start></ion-icon>
@@ -43,7 +43,7 @@
         </ng-container>
 
         <ng-container *ngFor="let item of items | async">
-            <ion-item-sliding *ngIf="!item.active && showDone">
+            <ion-item-sliding *ngIf="!item.active && listOptions.showDone">
                 <!--<ion-item (click)="showOptions(list.id, list.title)">-->
                 <ion-item  class="item-done" (click)="goToListPage(item)">
                     <ion-icon *ngIf="item.type == 'list'" name="list" item-start></ion-icon>

@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {AngularFireList} from "angularfire2/database";
+import {Item, ItemType} from "../../model/item";
 
 @Component({
     selector: 'new-item',
@@ -22,34 +23,20 @@ export class NewItemPage {
 
     addItem() {
         const newItemRef = this.itemsList.push({});
-        newItemRef.set({
-            id: newItemRef.key,
-            name: this.itemName,
-            type: "item",
-            active: "true"
-        });
-
+        const item = new Item(newItemRef.key, this.itemName, ItemType.Item, null);
+        newItemRef.set(item);
         this.navCtrl.pop();
     }
 
 
     addList() {
         const newListRef = this.allLists.push({});
-        newListRef.set({
-            id: newListRef.key,
-            name: this.itemName,
-            type: "list",
-            active: "true"
-        });
+        let list = new Item(newListRef.key, this.itemName, ItemType.List, null);
+        newListRef.set(list);
 
         const newItemRef = this.itemsList.push({});
-        newItemRef.set({
-            id: newItemRef.key,
-            name: this.itemName,
-            type: "list",
-            listRef: newListRef.key,
-            active: "true"
-        });
+        list = new Item(newItemRef.key, this.itemName, ItemType.List, newListRef.key);
+        newItemRef.set(list);
 
         this.navCtrl.pop();
     }
@@ -59,7 +46,7 @@ export class NewItemPage {
         console.log('ionViewDidLoad NewItemPage');
         setTimeout(() => {
             this.nameInput.setFocus();
-        },500);
+        }, 500);
     }
 
     // ngAfterViewChecked() {
