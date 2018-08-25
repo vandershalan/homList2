@@ -1,11 +1,13 @@
 export class Item {
 
-    constructor(id: String, name: String, type: ItemType, listRef: String) {};
+    active :boolean = true;
+
+    constructor(public id: String, public name: String, public type: ItemType, public listRef: String) {};
 }
 
 
 
 export enum ItemType {
-    Item = "ITEM",
-    List = "LIST"
+    Item = "item",
+    List = "list"
 }
