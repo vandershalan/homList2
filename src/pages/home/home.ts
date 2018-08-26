@@ -16,7 +16,7 @@ export class HomePage {
     allLists: AngularFireList<any>;
     items: Observable<any[]>;
     item: any;
-    searchValue: any;
+    public searchValue: any;
 
     listOptions: ListOptions = new ListOptions();
 

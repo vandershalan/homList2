@@ -23,19 +23,21 @@ export class NewItemPage {
 
     addItem() {
         const newItemRef = this.itemsList.push({});
-        const item = new Item(newItemRef.key, this.itemName, ItemType.Item, null);
+        const item = new Item(newItemRef.key, this.itemName);
         newItemRef.set(item);
+
         this.navCtrl.pop();
     }
 
 
     addList() {
         const newListRef = this.allLists.push({});
-        let list = new Item(newListRef.key, this.itemName, ItemType.List, null);
+        let list = new Item(newListRef.key, this.itemName, ItemType.List);
         newListRef.set(list);
 
         const newItemRef = this.itemsList.push({});
-        list = new Item(newItemRef.key, this.itemName, ItemType.List, newListRef.key);
+        list.id = newItemRef.key;
+        list.listRef = newListRef.key;
         newItemRef.set(list);
 
         this.navCtrl.pop();
