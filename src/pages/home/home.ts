@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
-import {ActionSheetController, AlertController, NavController, NavParams, PopoverController} from 'ionic-angular';
+import {ActionSheetController, AlertController, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {Observable} from "rxjs/Observable";
 import {NewItemPage} from "../newItem/newItem";
 import {OptionsComponent} from "../../components/options/options";
 import {ListOptions} from "../../model/listOptions";
+import {Item, ItemType} from "../../model/item";
+import {List} from "../../model/list";
 
 @Component({
     selector: 'page-home',
@@ -21,7 +23,7 @@ export class HomePage {
     listOptions: ListOptions = new ListOptions();
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase,
-                public popoverCtrl: PopoverController, public actionSheetCtrl: ActionSheetController) {
+                public popoverCtrl: PopoverController, public modalCtrl: ModalController, public actionSheetCtrl: ActionSheetController) {
 
         this.item = navParams.data;
         let firePath = "/lists";
@@ -87,12 +89,34 @@ export class HomePage {
 
     goToNewItemPage(itemName) {
         if (itemName == null) itemName = "";
-        this.navCtrl.push(NewItemPage, {itemName: itemName, itemsList: this.itemsList, allLists: this.allLists});
+
+        let addModal = this.modalCtrl.create(NewItemPage, {itemName});
+        addModal.onDidDismiss(item => {
+            if (item) {
+                this.addItem(item);
+            }
+        });
+        addModal.present();
     }
 
 
     goToListPage(item) {
         this.navCtrl.push(HomePage, item);
+    }
+
+
+    addItem(item: Item) {
+        if (item.type === ItemType.List) {
+            const newListRef = this.allLists.push({});
+            const list = new List(newListRef.key);
+            newListRef.set(list);
+
+            item.listRef = list.id;
+        }
+
+        const newItemRef = this.itemsList.push({});
+        item.id = newItemRef.key;
+        newItemRef.set(item);
     }
 
 

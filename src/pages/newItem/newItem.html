@@ -14,20 +14,20 @@
 
         <ion-item>
             <ion-label floating>Description</ion-label>
-            <ion-input type="text" value=""></ion-input>
+            <ion-input type="text" value="" [(ngModel)]="description"></ion-input>
         </ion-item>
 
     </ion-list>
 
     <div padding>
         <p>
-            <button ion-button color="primary" block (click)="addItem()">
+            <button ion-button color="primary" block (click)="addItem(itemType.Item)">
                 <ion-icon name="pricetag" padding></ion-icon>
                 Add as Item
             </button>
         </p>
         <p>
-            <button ion-button color="primary" block (click)="addList()">
+            <button ion-button color="primary" block (click)="addItem(itemType.List)">
                 <ion-icon name="list" padding></ion-icon>
                 Add as List
             </button>
