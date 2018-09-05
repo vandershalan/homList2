@@ -1,5 +1,5 @@
 export class List {
 
-    constructor(public id: String) {
+    constructor(public id: string, public name: string) {
     };
 }
