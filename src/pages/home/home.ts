@@ -16,14 +16,14 @@ export class HomePage {
 
     itemsList: AngularFireList<any>;
     allLists: AngularFireList<any>;
-    items: Observable<any[]>;
-    item: any;
-    public searchValue: any;
+    items: Observable<Item[]>;
+    item: Item;
+    searchValue: string;
 
     listOptions: ListOptions = new ListOptions();
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase,
-                public popoverCtrl: PopoverController, public modalCtrl: ModalController, public actionSheetCtrl: ActionSheetController) {
+                public popoverCtrl: PopoverController, public modalCtrl: ModalController) {
 
         this.item = navParams.data;
         let firePath = "/lists";
@@ -55,44 +55,13 @@ export class HomePage {
     }
 
 
-    updateList(listId, listName) {
-        let prompt = this.alertCtrl.create({
-            title: 'List Name',
-            message: "Update the name for this list",
-            inputs: [
-                {
-                    name: 'name',
-                    placeholder: 'Name',
-                    value: listName
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Cancel',
-                    handler: data => {
-                        console.log('Cancel clicked');
-                    }
-                },
-                {
-                    text: 'Save',
-                    handler: data => {
-                        this.itemsList.update(listId, {
-                            name: data.name
-                        });
-                    }
-                }
-            ]
-        });
-        prompt.present();
-    }
-
-
-    goToNewItemPage(itemName) {
+    showNewItemPage(itemName) {
         if (itemName == null) itemName = "";
 
         let addModal = this.modalCtrl.create(NewItemPage, {itemName});
         addModal.onDidDismiss(item => {
             if (item) {
+                this.searchValue = null;
                 this.addItem(item);
             }
         });
@@ -107,21 +76,22 @@ export class HomePage {
 
     addItem(item: Item) {
         if (item.type === ItemType.List) {
-            const newListRef = this.allLists.push({});
-            const list = new List(newListRef.key);
-            newListRef.set(list);
-
-            item.listRef = list.id;
+            const listRef = this.allLists.push({});
+            listRef.set(new List(listRef.key, item.name));
+            item.listRef = listRef.key;
         }
 
-        const newItemRef = this.itemsList.push({});
-        item.id = newItemRef.key;
-        newItemRef.set(item);
+        const itemRef = this.itemsList.push({});
+        item.id = itemRef.key;
+        itemRef.set(item);
     }
 
 
-    executed(item) {
+    executed(item: Item) {
         console.log("item: " + JSON.stringify(item));
+        if (item.type === ItemType.List) {
+
+        }
         item.active = false;
         this.itemsList.update(item.id, item);
     }

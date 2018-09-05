@@ -1,9 +1,10 @@
 export class Item {
 
-    public id: String;
-    active :boolean = true;
+    public id: string;
+    public active: boolean = true;
+    public listRef: string;
 
-    constructor(public name: String, public description: String = null, public type: ItemType = ItemType.Item, public listRef: String = null) {
+    constructor(public name: string, public description: string = null, public type: ItemType = ItemType.Item) {
 
     };
 }

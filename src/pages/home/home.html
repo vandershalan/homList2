@@ -19,7 +19,7 @@
     <ion-row align-items-center nowrap>
         <ion-searchbar [(ngModel)]="searchValue" no-padding padding-vertical padding-right>
         </ion-searchbar>
-        <button ion-button icon-only (click)="goToNewItemPage(searchValue)">
+        <button ion-button icon-only (click)="showNewItemPage(searchValue)">
             <ion-icon name="add"></ion-icon>
         </button>
     </ion-row>
@@ -27,13 +27,12 @@
     <ion-list reorder="true">
         <ng-container *ngFor="let item of items | async">
             <ion-item-sliding *ngIf="item.active && listOptions.showActive">
-                <!--<ion-item (click)="showOptions(list.id, list.title)">-->
                 <ion-item (click)="goToListPage(item)">
                     <ion-icon *ngIf="item.type == 'list'" name="list" item-start></ion-icon>
-                    <ion-icon *ngIf="item.type == 'item'" name="pricetag" item-start></ion-icon>
+                    <ion-icon *ngIf="item.type != 'list'" name="pricetag" item-start></ion-icon>
                     {{item.name}}
                 </ion-item>
-                <ion-item-options *ngIf="item.type == 'item'" side="left" (ionSwipe)="executed(item)">
+                <ion-item-options *ngIf="item.type != 'list'" side="left" (ionSwipe)="executed(item)">
                     <button ion-button expandable (click)="executed(item)">Zrobione</button>
                 </ion-item-options>
                 <ion-item-options side="right">
@@ -44,10 +43,9 @@
 
         <ng-container *ngFor="let item of items | async">
             <ion-item-sliding *ngIf="!item.active && listOptions.showDone">
-                <!--<ion-item (click)="showOptions(list.id, list.title)">-->
                 <ion-item  class="item-done" (click)="goToListPage(item)">
                     <ion-icon *ngIf="item.type == 'list'" name="list" item-start></ion-icon>
-                    <ion-icon *ngIf="item.type == 'item'" name="pricetag" item-start></ion-icon>
+                    <ion-icon *ngIf="item.type != 'list'" name="pricetag" item-start></ion-icon>
                     {{item.name}}
                 </ion-item>
                 <ion-item-options side="right">
