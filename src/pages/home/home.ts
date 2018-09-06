@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ActionSheetController, AlertController, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
+import {AlertController, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {Observable} from "rxjs/Observable";
 import {NewItemPage} from "../newItem/newItem";
@@ -50,8 +50,11 @@ export class HomePage {
     }
 
 
-    removeItem(item) {
-        this.itemsList.remove(item);
+    removeItem(item: Item) {
+
+        this.presentConfirm();
+
+        this.itemsList.remove(item.id);
     }
 
 
@@ -89,10 +92,34 @@ export class HomePage {
 
     executed(item: Item) {
         console.log("item: " + JSON.stringify(item));
+        
         if (item.type === ItemType.List) {
-
         }
         item.active = false;
         this.itemsList.update(item.id, item);
     }
+
+
+    presentConfirm() {
+        let alert = this.alertCtrl.create({
+          title: 'Confirm removing',
+          message: 'Do you really want to permament remove this item?',
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel clicked');
+              }
+            },
+            {
+              text: 'Remove',
+              handler: () => {
+                console.log('Buy clicked');
+              }
+            }
+          ]
+        });
+        alert.present();
+      }
 }

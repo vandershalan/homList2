@@ -8,8 +8,8 @@ import {Item, ItemType} from "../../model/item";
 })
 export class NewItemPage {
 
-    itemName: String;
-    description: String;
+    itemName: string;
+    description: string;
 
     itemType: typeof ItemType = ItemType;
 
