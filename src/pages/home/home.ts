@@ -28,7 +28,7 @@ export class HomePage {
         this.item = navParams.data;
         let firePath = "/lists";
         this.allLists = afDatabase.list(firePath);
-        firePath += "/" + this.item.id + "/items";
+        firePath += "/" + this.item.listRef + "/items";
         this.itemsList = afDatabase.list(firePath);
         this.items = this.itemsList.valueChanges();
 
@@ -47,14 +47,6 @@ export class HomePage {
         popover.present({
             ev: myEvent
         });
-    }
-
-
-    removeItem(item: Item) {
-
-        this.presentConfirm();
-
-        this.itemsList.remove(item.id);
     }
 
 
@@ -92,7 +84,7 @@ export class HomePage {
 
     executed(item: Item) {
         console.log("item: " + JSON.stringify(item));
-        
+
         if (item.type === ItemType.List) {
         }
         item.active = false;
@@ -100,26 +92,30 @@ export class HomePage {
     }
 
 
-    presentConfirm() {
+    removeItem(item: Item) {
         let alert = this.alertCtrl.create({
-          title: 'Confirm removing',
-          message: 'Do you really want to permament remove this item?',
-          buttons: [
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              handler: () => {
-                console.log('Cancel clicked');
-              }
-            },
-            {
-              text: 'Remove',
-              handler: () => {
-                console.log('Buy clicked');
-              }
-            }
-          ]
+            title: 'Confirm removing',
+            message: 'Do you really want to remove this item?',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel'
+                },
+                {
+                    text: 'Remove',
+                    handler: () => {
+                        if (ItemType.List === item.type) {
+                            this.allLists.remove(item.listRef);
+                        }
+                        this.itemsList.remove(item.id);
+                    }
+                }
+            ]
         });
         alert.present();
-      }
+    }
+
 }
+
+
+

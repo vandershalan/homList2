@@ -10,7 +10,7 @@ import {HomePage} from '../pages/home/home';
 })
 export class MyApp {
     rootPage: any = HomePage;
-    rootPageParams: any = {"id": "ROOT", "name": "homorgList"};
+    rootPageParams: any = {"id": "ROOT", "listRef": "ROOT","name": "homorgList"};
 
     constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
         platform.ready().then(() => {
