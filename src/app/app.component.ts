@@ -4,13 +4,14 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 
 import {HomePage} from '../pages/home/home';
+import {Item, ItemType} from "../model/item";
 
 @Component({
     templateUrl: 'app.html'
 })
 export class MyApp {
     rootPage: any = HomePage;
-    rootPageParams: any = {"id": "ROOT", "listRef": "ROOT","name": "homorgList"};
+    rootPageParams: any;
 
     constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
         platform.ready().then(() => {
@@ -19,6 +20,12 @@ export class MyApp {
             statusBar.styleDefault();
             splashScreen.hide();
         });
+
+        const item: Item = new Item("homorgList", "Root list", ItemType.List);
+        item.listRef = "ROOT";
+        item.id = "ROOT";
+
+        this.rootPageParams = item;
     }
 }
 
