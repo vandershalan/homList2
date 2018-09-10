@@ -17,7 +17,7 @@
 <ion-content padding-horizontal>
 
     <ion-row align-items-center nowrap>
-        <ion-searchbar [(ngModel)]="searchValue" no-padding padding-vertical padding-right>
+        <ion-searchbar [(ngModel)]="searchValue" (ionInput)="filterItems()" no-padding padding-vertical padding-right>
         </ion-searchbar>
         <button ion-button icon-only (click)="showNewItemPage(searchValue)">
             <ion-icon name="add"></ion-icon>

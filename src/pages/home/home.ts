@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AlertController, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {Observable} from "rxjs/Observable";
@@ -12,7 +12,7 @@ import {List} from "../../model/list";
     selector: 'page-home',
     templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
     itemsList: AngularFireList<any>;
     allLists: AngularFireList<any>;
@@ -24,16 +24,38 @@ export class HomePage {
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase,
                 public popoverCtrl: PopoverController, public modalCtrl: ModalController) {
-
         this.item = navParams.data;
+    }
+
+    ngOnInit() {
         let firePath = "/lists";
-        this.allLists = afDatabase.list(firePath);
+        this.allLists = this.afDatabase.list(firePath);
         firePath += "/" + this.item.listRef + "/items";
-        this.itemsList = afDatabase.list(firePath);
-        this.items = this.itemsList.valueChanges();
+        this.itemsList = this.afDatabase.list(firePath);
+
+        this.filterItems();
 
         console.log("firePath: " + firePath);
         console.log(JSON.stringify(this.listOptions));
+
+    }
+
+
+    filterItems() {
+        if (this.searchValue && this.searchValue.trim() != '') {
+           this.listOptions.showDone = true;
+            //FIXME - nie kumam tego
+            this.items = this.items.map (item => {
+            // this.items = this.itemsLists.valueChanges().map (item => {
+                return item.filter((itm) => {
+                    return (itm.name.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1);
+                })
+            })
+        } else {
+            this.items = this.itemsList.valueChanges();
+        }
+
+        this.items.forEach(value => {console.log(value)});
     }
 
 
