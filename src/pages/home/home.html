@@ -25,38 +25,40 @@
     </ion-row>
 
     <ion-list reorder="true">
-        <ng-container *ngFor="let item of items | async">
-            <ion-item-sliding *ngIf="item.active && listOptions.showActive">
-                <ion-item (click)="goToListPage(item)">
-                    <ion-icon *ngIf="item.type == 'list'" name="list" item-start></ion-icon>
-                    <ion-icon *ngIf="item.type != 'list'" name="pricetag" item-start></ion-icon>
-                    {{item.name}}
-                </ion-item>
-                <ion-item-options *ngIf="item.type != 'list'" side="left" (ionSwipe)="executed(item)">
-                    <button ion-button expandable (click)="executed(item)">Zrobione</button>
-                </ion-item-options>
-                <ion-item-options side="right">
-                    <button ion-button (click)="removeItem(item)">Usuń</button>
-                </ion-item-options>
-            </ion-item-sliding>
-        </ng-container>
+        <!--<ng-container *ngIf="items | async as itms">-->
+            <ng-container *ngFor="let itm of items | async">
+                <ion-item-sliding *ngIf="itm.active && listOptions.showActive">
+                    <ion-item (click)="goToListPage(itm)">
+                        <ion-icon *ngIf="itm.type == 'list'" name="list" item-start></ion-icon>
+                        <ion-icon *ngIf="itm.type != 'list'" name="pricetag" item-start></ion-icon>
+                        {{itm.name}}
+                    </ion-item>
+                    <ion-item-options *ngIf="itm.type != 'list'" side="left" (ionSwipe)="executed(itm)">
+                        <button ion-button expandable (click)="executed(itm)">Zrobione</button>
+                    </ion-item-options>
+                    <ion-item-options side="right">
+                        <button ion-button (click)="removeItem(itm)">Usuń</button>
+                    </ion-item-options>
+                </ion-item-sliding>
+            </ng-container>
 
-        <ng-container *ngFor="let item of items | async">
-            <ion-item-sliding *ngIf="!item.active && listOptions.showDone">
-                <ion-item  class="item-done" (click)="goToListPage(item)">
-                    <ion-icon *ngIf="item.type == 'list'" name="list" item-start></ion-icon>
-                    <ion-icon *ngIf="item.type != 'list'" name="pricetag" item-start></ion-icon>
-                    {{item.name}}
-                </ion-item>
-                <ion-item-options side="right">
-                    <button ion-button (click)="removeItem(item)">Usuń</button>
-                </ion-item-options>
-            </ion-item-sliding>
-        </ng-container>
+            <ng-container *ngFor="let itm of items | async">
+                <ion-item-sliding *ngIf="!itm.active && listOptions.showDone">
+                    <ion-item class="item-done" (click)="goToListPage(itm)">
+                        <ion-icon *ngIf="itm.type == 'list'" name="list" item-start></ion-icon>
+                        <ion-icon *ngIf="itm.type != 'list'" name="pricetag" item-start></ion-icon>
+                        {{itm.name}}
+                    </ion-item>
+                    <ion-item-options side="right">
+                        <button ion-button (click)="removeItem(itm)">Usuń</button>
+                    </ion-item-options>
+                </ion-item-sliding>
+            </ng-container>
 
 
-        <ng-container *ngFor="let item of items | async">
-        </ng-container>
+            <ng-container *ngFor="let itm of items | async">
+            </ng-container>
+        <!--</ng-container>-->
     </ion-list>
 
 </ion-content>

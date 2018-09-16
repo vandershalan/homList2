@@ -32,9 +32,9 @@ export class HomePage implements OnInit {
         this.dbAllLists = this.afDatabase.list(firePath);
         firePath += "/" + this.item.listRef + "/items";
         this.dbItemsList = this.afDatabase.list(firePath);
-        this.items = this.dbItemsList.valueChanges();
+        //this.items = this.dbItemsList.valueChanges();
 
-        //this.filterItems();
+        this.filterItems();
 
         console.log("firePath: " + firePath);
         console.log(JSON.stringify(this.listOptions));
