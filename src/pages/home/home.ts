@@ -14,8 +14,8 @@ import {List} from "../../model/list";
 })
 export class HomePage implements OnInit {
 
-    itemsList: AngularFireList<any>;
-    allLists: AngularFireList<any>;
+    dbItemsList: AngularFireList<any>;
+    dbAllLists: AngularFireList<any>;
     items: Observable<Item[]>;
     item: Item;
     searchValue: string;
@@ -29,33 +29,12 @@ export class HomePage implements OnInit {
 
     ngOnInit() {
         let firePath = "/lists";
-        this.allLists = this.afDatabase.list(firePath);
+        this.dbAllLists = this.afDatabase.list(firePath);
         firePath += "/" + this.item.listRef + "/items";
-        this.itemsList = this.afDatabase.list(firePath);
-
-        this.filterItems();
+        this.dbItemsList = this.afDatabase.list(firePath);
+        this.items = this.dbItemsList.valueChanges();
 
         console.log("firePath: " + firePath);
-        console.log(JSON.stringify(this.listOptions));
-
-    }
-
-
-    filterItems() {
-        if (this.searchValue && this.searchValue.trim() != '') {
-           this.listOptions.showDone = true;
-            //FIXME - nie kumam tego
-            this.items = this.items.map (item => {
-            // this.items = this.itemsLists.valueChanges().map (item => {
-                return item.filter((itm) => {
-                    return (itm.name.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1);
-                })
-            })
-        } else {
-            this.items = this.itemsList.valueChanges();
-        }
-
-        this.items.forEach(value => {console.log(value)});
     }
 
 
@@ -65,7 +44,7 @@ export class HomePage implements OnInit {
             if (optionsData) {
                 this.listOptions = optionsData.listOptions;
             }
-        })
+        });
         popover.present({
             ev: myEvent
         });
@@ -93,12 +72,12 @@ export class HomePage implements OnInit {
 
     addItem(item: Item) {
         if (item.type === ItemType.List) {
-            const listRef = this.allLists.push({});
+            const listRef = this.dbAllLists.push({});
             listRef.set(new List(listRef.key, item.name));
             item.listRef = listRef.key;
         }
 
-        const itemRef = this.itemsList.push({});
+        const itemRef = this.dbItemsList.push({});
         item.id = itemRef.key;
         itemRef.set(item);
     }
@@ -110,7 +89,7 @@ export class HomePage implements OnInit {
         if (item.type === ItemType.List) {
         }
         item.active = false;
-        this.itemsList.update(item.id, item);
+        this.dbItemsList.update(item.id, item);
     }
 
 
@@ -127,9 +106,9 @@ export class HomePage implements OnInit {
                     text: 'Remove',
                     handler: () => {
                         if (ItemType.List === item.type) {
-                            this.allLists.remove(item.listRef);
+                            this.dbAllLists.remove(item.listRef);
                         }
-                        this.itemsList.remove(item.id);
+                        this.dbItemsList.remove(item.id);
                     }
                 }
             ]
