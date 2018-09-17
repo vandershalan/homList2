@@ -32,36 +32,9 @@ export class HomePage implements OnInit {
         this.dbAllLists = this.afDatabase.list(firePath);
         firePath += "/" + this.item.listRef + "/items";
         this.dbItemsList = this.afDatabase.list(firePath);
-        //this.items = this.dbItemsList.valueChanges();
-
-        this.filterItems();
+        this.items = this.dbItemsList.valueChanges();
 
         console.log("firePath: " + firePath);
-        console.log(JSON.stringify(this.listOptions));
-
-    }
-
-
-    filterItems() {
-        console.log("filterstartItems");
-
-        if (this.searchValue && this.searchValue.trim() != '') {
-            console.log("filterItems 2");
-            this.listOptions.showDone = true;
-            console.log("filterItems 3");
-            //FIXME - nie kumam tego
-            //this.items = this.items.map(itms => {
-            this.items = this.dbItemsList.valueChanges().map(itms => {
-                console.log("itms: " + JSON.stringify(itms));
-                return itms.filter((itm) => {
-                    console.log("itm: " + JSON.stringify(itm));
-                    return (itm.name.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1);
-                })
-            })
-        } else {
-            this.items = this.dbItemsList.valueChanges();
-        }
-        console.log("filterItems END");
     }
 
 
@@ -71,7 +44,7 @@ export class HomePage implements OnInit {
             if (optionsData) {
                 this.listOptions = optionsData.listOptions;
             }
-        })
+        });
         popover.present({
             ev: myEvent
         });

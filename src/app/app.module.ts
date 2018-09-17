@@ -12,6 +12,7 @@ import {OptionsComponent} from "../components/options/options";
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
 import {ListOptions} from "../model/listOptions";
+import {SearchPipe} from "../pipes/search/search";
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -28,7 +29,8 @@ export const firebaseConfig = {
         MyApp,
         HomePage,
         NewItemPage,
-        OptionsComponent
+        OptionsComponent,
+        SearchPipe
     ],
     imports: [
         BrowserModule,

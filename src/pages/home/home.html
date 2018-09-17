@@ -17,7 +17,7 @@
 <ion-content padding-horizontal>
 
     <ion-row align-items-center nowrap>
-        <ion-searchbar [(ngModel)]="searchValue" (ionInput)="filterItems()" no-padding padding-vertical padding-right>
+        <ion-searchbar [(ngModel)]="searchValue" no-padding padding-vertical padding-right>
         </ion-searchbar>
         <button ion-button icon-only (click)="showNewItemPage(searchValue)">
             <ion-icon name="add"></ion-icon>
@@ -26,7 +26,7 @@
 
     <ion-list reorder="true">
         <!--<ng-container *ngIf="items | async as itms">-->
-            <ng-container *ngFor="let itm of items | async">
+            <ng-container *ngFor="let itm of items | async | search : searchValue">
                 <ion-item-sliding *ngIf="itm.active && listOptions.showActive">
                     <ion-item (click)="goToListPage(itm)">
                         <ion-icon *ngIf="itm.type == 'list'" name="list" item-start></ion-icon>
@@ -42,8 +42,8 @@
                 </ion-item-sliding>
             </ng-container>
 
-            <ng-container *ngFor="let itm of items | async">
-                <ion-item-sliding *ngIf="!itm.active && listOptions.showDone">
+            <ng-container *ngFor="let itm of items | async | search : searchValue">
+                <ion-item-sliding *ngIf="!itm.active && (listOptions.showDone || searchValue)">
                     <ion-item class="item-done" (click)="goToListPage(itm)">
                         <ion-icon *ngIf="itm.type == 'list'" name="list" item-start></ion-icon>
                         <ion-icon *ngIf="itm.type != 'list'" name="pricetag" item-start></ion-icon>
@@ -53,10 +53,6 @@
                         <button ion-button (click)="removeItem(itm)">Usuń</button>
                     </ion-item-options>
                 </ion-item-sliding>
-            </ng-container>
-
-
-            <ng-container *ngFor="let itm of items | async">
             </ng-container>
         <!--</ng-container>-->
     </ion-list>
