@@ -1,24 +1,27 @@
 <!-- Generated template for the OptionsComponent component -->
-    <ion-item-group no-lines>
-        <ion-item-divider color="light">View</ion-item-divider>
-        <ion-item>
-            <ion-label>Show active</ion-label>
-            <ion-toggle [(ngModel)]="listOptions.showActive" (click)="close()"></ion-toggle>
-        </ion-item>
-        <ion-item>
-            <ion-label>Show done</ion-label>
-            <ion-toggle [(ngModel)]="listOptions.showDone" (click)="close()"></ion-toggle>
-        </ion-item>
-        <ion-item>
-            <ion-label>Search in done</ion-label>
-            <ion-toggle [(ngModel)]="listOptions.searchInDone" (click)="close()"></ion-toggle>
-        </ion-item>
-        <ion-item-divider color="light">Sort by</ion-item-divider>
+<ion-item-group no-lines>
+    <ion-item-divider color="light">View</ion-item-divider>
+    <ion-item>
+        <ion-label>Show active</ion-label>
+        <ion-toggle [(ngModel)]="listOptions.showActive" (click)="close()"></ion-toggle>
+    </ion-item>
+    <ion-item>
+        <ion-label>Show done</ion-label>
+        <ion-toggle [(ngModel)]="listOptions.showDone" (click)="close()"></ion-toggle>
+    </ion-item>
+    <ion-item>
+        <ion-label>Search in done</ion-label>
+        <ion-toggle [(ngModel)]="listOptions.searchInDone" (click)="close()"></ion-toggle>
+    </ion-item>
+    <ion-item-divider color="light">Sort by</ion-item-divider>
+    <ion-list radio-group [(ngModel)]="listOptions.column" >
         <ion-item>
             <ion-label>Name</ion-label>
-            <ion-checkbox [(ngModel)]="listOptions.column" (click)="close()"></ion-checkbox>
+            <ion-radio value="name" (click)="close()"></ion-radio>
         </ion-item>
-        <ion-item>Show</ion-item>
-        <ion-item>Show</ion-item>
-        <ion-item>Show</ion-item>
-    </ion-item-group>
+        <ion-item>
+            <ion-label>Id</ion-label>
+            <ion-radio value="id" (click)="close()"></ion-radio>
+        </ion-item>
+    </ion-list>
+</ion-item-group>
