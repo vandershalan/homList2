@@ -26,7 +26,7 @@
 
     <ion-list reorder="true">
         <!--<ng-container *ngIf="items | async as itms">-->
-        <ng-container *ngFor="let itm of items | async | search : searchValue">
+        <ng-container *ngFor="let itm of items | async | search : searchValue | sort: {property: listOptions.column, order: listOptions.order}">
             <ion-item-sliding *ngIf="itm.active && listOptions.showActive">
                 <ion-item (click)="goToListPage(itm)">
                     <ion-icon *ngIf="itm.type == 'list'" name="list" item-start></ion-icon>
@@ -42,7 +42,7 @@
             </ion-item-sliding>
         </ng-container>
 
-        <ng-container *ngFor="let itm of items | async | search : searchValue">
+        <ng-container *ngFor="let itm of items | async | search : searchValue | sort: {property: column, order: order}">
             <ion-item-sliding *ngIf="!itm.active && ((listOptions.searchInDone && searchValue) || listOptions.showDone)">
                 <ion-item class="item-done" (click)="goToListPage(itm)">
                     <ion-icon *ngIf="itm.type == 'list'" name="list" item-start></ion-icon>

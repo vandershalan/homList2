@@ -51,6 +51,13 @@ export class HomePage implements OnInit {
     }
 
 
+    sort(){
+        console.log("sort");
+        this.listOptions.descending = !this.listOptions.descending;
+        this.listOptions.order = this.listOptions.descending ? 1 : -1;
+    }
+
+
     showNewItemPage(itemName) {
         if (itemName == null) itemName = "";
 

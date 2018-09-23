@@ -13,6 +13,7 @@ import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
 import {ListOptions} from "../model/listOptions";
 import {SearchPipe} from "../pipes/search/search";
+import {SortPipe} from "../pipes/sort/sort";
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -30,7 +31,8 @@ export const firebaseConfig = {
         HomePage,
         NewItemPage,
         OptionsComponent,
-        SearchPipe
+        SearchPipe,
+        SortPipe
     ],
     imports: [
         BrowserModule,
