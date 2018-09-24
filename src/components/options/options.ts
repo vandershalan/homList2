@@ -13,27 +13,22 @@ export class OptionsComponent {
 
     constructor(public viewCtrl: ViewController, public navParams: NavParams) {
         this.listOptions = navParams.get("listOptions");
-        this.currentSortField = this.listOptions.column;
+        this.currentSortField = this.listOptions.sortField;
     }
 
 
     sortChanged() {
-        if (this.listOptions.column === this.currentSortField) {
-            this.listOptions.descending = !this.listOptions.descending;
+        if (this.listOptions.sortField === this.currentSortField) {
+            this.listOptions.sortDesc = !this.listOptions.sortDesc;
         } else {
-            this.listOptions.descending = false;
-            this.listOptions.column = this.currentSortField;
+            this.listOptions.sortDesc = false;
+            this.listOptions.sortField = this.currentSortField;
         }
-        console.log(this.listOptions.column);
-        console.log(this.listOptions.descending);
         this.close();
     }
 
+
     close() {
         this.viewCtrl.dismiss({listOptions: this.listOptions});
-    }
-
-    onDidDismiss() {
-
     }
 }

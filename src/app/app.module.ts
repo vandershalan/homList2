@@ -11,9 +11,9 @@ import {OptionsComponent} from "../components/options/options";
 // Import the AF2 Module
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
-import {ListOptions} from "../model/listOptions";
+// import {ListOptions} from "../model/listOptions";
 import {SearchPipe} from "../pipes/search/search";
-import {SortPipe} from "../pipes/sort/sort";
+import {OrderModule} from "ngx-order-pipe";
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -31,14 +31,14 @@ export const firebaseConfig = {
         HomePage,
         NewItemPage,
         OptionsComponent,
-        SearchPipe,
-        SortPipe
+        SearchPipe
     ],
     imports: [
         BrowserModule,
         IonicModule.forRoot(MyApp),
         AngularFireModule.initializeApp(firebaseConfig),
-        AngularFireDatabaseModule
+        AngularFireDatabaseModule,
+        OrderModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [

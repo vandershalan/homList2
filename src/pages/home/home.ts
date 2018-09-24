@@ -43,18 +43,11 @@ export class HomePage implements OnInit {
         popover.onDidDismiss((optionsData) => {
             if (optionsData) {
                 this.listOptions = optionsData.listOptions;
-                //this.sort();
             }
         });
         popover.present({
             ev: myEvent
         });
-    }
-
-
-    sort(){
-        console.log("sort");
-        this.listOptions.order = this.listOptions.descending ? 1 : -1;
     }
 
 
