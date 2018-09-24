@@ -14,14 +14,14 @@
         <ion-toggle [(ngModel)]="listOptions.searchInDone" (click)="close()"></ion-toggle>
     </ion-item>
     <ion-item-divider color="light">Sort by</ion-item-divider>
-    <ion-list radio-group [(ngModel)]="listOptions.column" >
+    <ion-list radio-group [(ngModel)]="currentSortField">
         <ion-item>
             <ion-label>Name</ion-label>
-            <ion-radio value="name" (click)="close()"></ion-radio>
+            <ion-radio value="name" (ionSelect)="sortChanged()"></ion-radio>
         </ion-item>
         <ion-item>
             <ion-label>Id</ion-label>
-            <ion-radio value="id" (click)="close()"></ion-radio>
+            <ion-radio value="id" (ionSelect)="sortChanged()"></ion-radio>
         </ion-item>
     </ion-list>
 </ion-item-group>

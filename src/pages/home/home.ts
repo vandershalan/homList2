@@ -43,6 +43,7 @@ export class HomePage implements OnInit {
         popover.onDidDismiss((optionsData) => {
             if (optionsData) {
                 this.listOptions = optionsData.listOptions;
+                //this.sort();
             }
         });
         popover.present({
@@ -53,7 +54,6 @@ export class HomePage implements OnInit {
 
     sort(){
         console.log("sort");
-        this.listOptions.descending = !this.listOptions.descending;
         this.listOptions.order = this.listOptions.descending ? 1 : -1;
     }
 
