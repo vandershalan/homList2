@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertController, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
-import {Observable} from "rxjs/Observable";
 import {NewItemPage} from "../newItem/newItem";
 import {OptionsComponent} from "../../components/options/options";
 import {ListOptions} from "../../model/listOptions";
 import {Item, ItemType} from "../../model/item";
 import {List} from "../../model/list";
 import {Category} from "../../model/category";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'page-home',

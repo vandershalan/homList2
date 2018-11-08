@@ -11,7 +11,9 @@ log.txt
 *.sublime-workspace
 .vscode/
 npm-debug.log*
-
+resources/
+.settings/
+.project
 .idea/
 .sourcemaps/
 .sass-cache/
@@ -33,3 +35,6 @@ $RECYCLE.BIN/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+.tern-project
+homList2.iml
+typings/cordova-typings.d.ts
