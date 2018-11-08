@@ -14,6 +14,7 @@ import {AngularFireDatabaseModule} from 'angularfire2/database';
 // import {ListOptions} from "../model/listOptions";
 import {SearchPipe} from "../pipes/search/search";
 import {OrderModule} from "ngx-order-pipe";
+import {FilterPipeModule} from "ngx-filter-pipe";
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -38,7 +39,8 @@ export const firebaseConfig = {
         IonicModule.forRoot(MyApp),
         AngularFireModule.initializeApp(firebaseConfig),
         AngularFireDatabaseModule,
-        OrderModule
+        OrderModule,
+        FilterPipeModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [

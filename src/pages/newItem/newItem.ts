@@ -10,9 +10,9 @@ export class NewItemPage {
 
     itemName: string;
     description: string;
+    category: string;
 
     itemType: typeof ItemType = ItemType;
-
     @ViewChild('nameInput') nameInput;
 
     constructor(public navParams: NavParams, public viewCtrl: ViewController) {
@@ -23,6 +23,9 @@ export class NewItemPage {
 
     addItem(itemType: ItemType) {
         const item = new Item(this.itemName, this.description, itemType);
+        if (this.category) {
+            item.category = this.category;
+        }
         this.viewCtrl.dismiss(item);
     }
 

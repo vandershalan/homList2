@@ -7,6 +7,7 @@ import {OptionsComponent} from "../../components/options/options";
 import {ListOptions} from "../../model/listOptions";
 import {Item, ItemType} from "../../model/item";
 import {List} from "../../model/list";
+import {Category} from "../../model/category";
 
 @Component({
     selector: 'page-home',
@@ -14,12 +15,15 @@ import {List} from "../../model/list";
 })
 export class HomePage implements OnInit {
 
-    dbItemsList: AngularFireList<any>;
     dbAllLists: AngularFireList<any>;
+    dbList: AngularFireList<any>;
+    dbItemsList: AngularFireList<any>;
+    dbCategories: AngularFireList<any>;
     items: Observable<Item[]>;
+    categories: Observable<Category[]>;
     item: Item;
-    searchValue: string;
 
+    searchValue: string;
     listOptions: ListOptions = new ListOptions();
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase,
@@ -27,14 +31,21 @@ export class HomePage implements OnInit {
         this.item = navParams.data;
     }
 
-    ngOnInit() {
-        let firePath = "/lists";
-        this.dbAllLists = this.afDatabase.list(firePath);
-        firePath += "/" + this.item.listRef + "/items";
-        this.dbItemsList = this.afDatabase.list(firePath);
-        this.items = this.dbItemsList.valueChanges();
 
-        console.log("firePath: " + firePath);
+    ngOnInit() {
+        const fireAllListsPath = "/lists";
+        const fireCurrentListPath = fireAllListsPath + "/" + this.item.listRef;
+        const fireCurrentListItemsPath = fireCurrentListPath + "/items";
+        const fireCurrentListCategoriesPath = fireCurrentListPath + "/categories";
+
+        this.dbAllLists = this.afDatabase.list(fireAllListsPath);
+        this.dbItemsList = this.afDatabase.list(fireCurrentListItemsPath);
+        this.dbCategories = this.afDatabase.list(fireCurrentListCategoriesPath);
+
+        this.items = this.dbItemsList.valueChanges();
+        this.categories = this.dbCategories.valueChanges();
+
+        console.log("firePath: " + fireCurrentListPath);
     }
 
 
@@ -70,6 +81,11 @@ export class HomePage implements OnInit {
     }
 
 
+    goToEditPage(item) {
+        //this.navCtrl.push(HomePage, item);
+    }
+
+
     addItem(item: Item) {
         if (item.type === ItemType.List) {
             const listRef = this.dbAllLists.push({});
@@ -90,6 +106,13 @@ export class HomePage implements OnInit {
         }
         item.active = false;
         this.dbItemsList.update(item.id, item);
+    }
+
+
+    reorderItems(indexes) {
+        console.log (indexes.from + " " + indexes.to);
+        let element = this.items[indexes.from];
+        console.log (element);
     }
 
 

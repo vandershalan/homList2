@@ -10,6 +10,10 @@
         <ion-toggle [(ngModel)]="listOptions.showDone" (click)="close()"></ion-toggle>
     </ion-item>
     <ion-item>
+        <ion-label>Search in active</ion-label>
+        <ion-toggle [(ngModel)]="listOptions.searchInActive" (click)="close()"></ion-toggle>
+    </ion-item>
+    <ion-item>
         <ion-label>Search in done</ion-label>
         <ion-toggle [(ngModel)]="listOptions.searchInDone" (click)="close()"></ion-toggle>
     </ion-item>
@@ -20,8 +24,8 @@
             <ion-radio value="name" (ionSelect)="sortChanged()"></ion-radio>
         </ion-item>
         <ion-item>
-            <ion-label>Id</ion-label>
-            <ion-radio value="id" (ionSelect)="sortChanged()"></ion-radio>
+            <ion-label>Custom</ion-label>
+            <ion-radio value="order" (ionSelect)="sortChanged()"></ion-radio>
         </ion-item>
     </ion-list>
 </ion-item-group>
