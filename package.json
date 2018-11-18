@@ -39,6 +39,7 @@
     "ionicons": "4.4.6",
     "ngx-filter-pipe": "^2.1.2",
     "ngx-order-pipe": "^2.0.1",
+    "npm": "^6.4.1",
     "python": "0.0.4",
     "rxjs": "6.3.3",
     "rxjs-compat": "6.3.3",
