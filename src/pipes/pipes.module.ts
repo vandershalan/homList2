@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
-import {SearchPipe} from './search/search';
-import {FilterUnusedCategoriesPipe} from "./search/filterUnusedCategories";
+import {FilterPipe} from './filter/filter';
+import {SortPipe} from "./sort/sort";
 
 @NgModule({
-    declarations: [SearchPipe, FilterUnusedCategoriesPipe],
+    declarations: [FilterPipe, SortPipe],
     imports: [],
-    exports: [SearchPipe, FilterUnusedCategoriesPipe]
+    exports: [FilterPipe, SortPipe]
 })
 export class PipesModule {
 }

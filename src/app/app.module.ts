@@ -12,7 +12,8 @@ import {OptionsComponent} from "../components/options/options";
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
 // import {ListOptions} from "../model/listOptions";
-import {SearchPipe} from "../pipes/search/search";
+import {FilterPipe} from "../pipes/filter/filter";
+import {SortPipe} from "../pipes/sort/sort";
 import {OrderModule} from "ngx-order-pipe";
 import {FilterPipeModule} from "ngx-filter-pipe";
 
@@ -32,7 +33,8 @@ export const firebaseConfig = {
         HomePage,
         NewItemPage,
         OptionsComponent,
-        SearchPipe
+        FilterPipe,
+        SortPipe
     ],
     imports: [
         BrowserModule,

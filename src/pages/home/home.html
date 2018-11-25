@@ -26,7 +26,7 @@
 
     <ng-container *ngIf="((listOptions.searchInActive || listOptions.searchInDone) && searchValue) || listOptions.showActive || listOptions.showDone">
 
-        <ng-container *ngFor="let itm of sortedItems | async; let i = index; ">
+        <ng-container *ngFor="let itm of items | async | filter: searchValue | sort: sortOptions ; let i = index; ">
 
             <ion-item-divider *ngIf=" (itm.category || itm.category != 'default' )" color="light">
                 <!--<ion-icon name="cos" item-start></ion-icon>-->

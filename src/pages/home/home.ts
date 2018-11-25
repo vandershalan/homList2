@@ -8,10 +8,7 @@ import {Item, ItemType} from "../../model/item";
 import {List} from "../../model/list";
 import {Category} from "../../model/category";
 import {Observable} from "rxjs";
-import {SortService} from "../../utils/SortService";
-import {filter, map} from "rxjs/operators";
 import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
-import {FilterService} from '../../utils/FilterService';
 
 @Component({
     selector: 'page-home',
@@ -24,14 +21,14 @@ export class HomePage implements OnInit {
     dbItemsList: AngularFireList<any>;
     dbCategories: AngularFireList<any>;
     items: Observable<Item[]>;
-    sortedItems: Observable<Item[]>;
     categories: Observable<Category[]>;
     item: Item;
     rd = (val) => DiacriticsRemoval.removeDiacritics(val.toLowerCase());
 
+    listOptions: ListOptions = new ListOptions();
 
     searchValue: string;
-    listOptions: ListOptions = new ListOptions();
+    sortOptions: any = [{name: 'category'}, {name: 'active'}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}];
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase,
                 public popoverCtrl: PopoverController, public modalCtrl: ModalController) {
@@ -50,8 +47,9 @@ export class HomePage implements OnInit {
         this.dbCategories = this.afDatabase.list(fireCurrentListCategoriesPath);
 
         this.items = this.dbItemsList.valueChanges();
-        this.sortedItems = this.items.pipe(map(itms => itms.filter(itm => FilterService.filter(itm, this.searchValue))), map(itms => itms.sort((SortService.sortBy({name: 'category'}, {name: 'active'}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc})))));
         this.categories = this.dbCategories.valueChanges();
+
+        //this.filter(null);
 
         console.log("firePath: " + fireCurrentListPath);
     }

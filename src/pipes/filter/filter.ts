@@ -4,14 +4,28 @@ import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
 
 
 @Pipe({
-  name: 'search',
+  name: 'filter',
 })
-export class SearchPipe implements PipeTransform {
+export class FilterPipe implements PipeTransform {
+
     transform(items: Item[], searchValue: string): Item[] {
+
         if(!items) return [];
+
         if(!searchValue) return items;
-        searchValue = DiacriticsRemoval.removeDiacritics(searchValue.toLowerCase());
+
+        searchValue = this.normalize(searchValue.toLowerCase());
+
         return items.filter( itm => {
-            return DiacriticsRemoval.removeDiacritics(itm.name.toLowerCase()).includes(searchValue);
+            return this.normalize(itm.name).includes(searchValue);
         });
-    }}
+
+    }
+
+
+    normalize(str: string): string {
+        return DiacriticsRemoval.removeDiacritics(str.toLowerCase());
+    }
+
+
+}
