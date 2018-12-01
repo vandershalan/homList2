@@ -24,11 +24,11 @@
         </button>
     </ion-row>
 
-    <ng-container *ngIf="((listOptions.searchInActive || listOptions.searchInDone) && searchValue) || listOptions.showActive || listOptions.showDone">
+    <ion-list *ngIf="((listOptions.searchInActive || listOptions.searchInDone) && searchValue) || listOptions.showActive || listOptions.showDone">
 
-        <ng-container *ngFor="let itm of items | async | filter: searchValue | sort: sortOptions ; let i = index; ">
+        <ng-container *ngFor="let itm of items | async | filter: searchValue | sort: [{name: 'category'}, {name: 'active', reverse: true}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}]; let i =index">
 
-            <ion-item-divider *ngIf=" (itm.category || itm.category != 'default' )" color="light">
+            <ion-item-divider *ngIf="isCategoryChanged(i, itm.category)" color="light">
                 <!--<ion-icon name="cos" item-start></ion-icon>-->
                 {{itm.category}}
             </ion-item-divider>
@@ -69,6 +69,6 @@
 
         </ng-container>
 
-    </ng-container>
+    </ion-list>
 
 </ion-content>

@@ -23,12 +23,16 @@ export class HomePage implements OnInit {
     items: Observable<Item[]>;
     categories: Observable<Category[]>;
     item: Item;
-    rd = (val) => DiacriticsRemoval.removeDiacritics(val.toLowerCase());
+
+    rd = (val) => typeof val === 'string' ? DiacriticsRemoval.removeDiacritics(val.toLowerCase()) : val;
 
     listOptions: ListOptions = new ListOptions();
 
     searchValue: string;
-    sortOptions: any = [{name: 'category'}, {name: 'active'}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}];
+
+    private prevCategory: string ;
+
+    //sortOptions: any = {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc};
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase,
                 public popoverCtrl: PopoverController, public modalCtrl: ModalController) {
@@ -49,9 +53,16 @@ export class HomePage implements OnInit {
         this.items = this.dbItemsList.valueChanges();
         this.categories = this.dbCategories.valueChanges();
 
-        //this.filter(null);
-
         console.log("firePath: " + fireCurrentListPath);
+    }
+
+
+    isCategoryChanged(currIdx, currCategory) : boolean {
+        if (currIdx == 0 || currCategory != this.prevCategory) {
+            this.prevCategory = currCategory;
+            return true;
+        }
+        return false;
     }
 
 

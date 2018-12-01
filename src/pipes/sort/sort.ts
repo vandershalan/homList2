@@ -8,7 +8,9 @@ import {SortService} from "../../utils/SortService";
 })
 export class SortPipe implements PipeTransform {
 
-    transform(items: Item[], sortOptions: any): Item[] {
+    transform(items: Item[], sortOptions: any[]): Item[] {
+
+        // console.log("SortPipe: sortOptions: " + JSON.stringify(sortOptions));
 
         if(!items) return [];
 

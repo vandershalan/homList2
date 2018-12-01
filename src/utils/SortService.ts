@@ -1,13 +1,23 @@
 export class SortService {
 
-    static sortBy(...args: any[]) { //multiple sort https://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
+    static sortBy(args: any[]) { //multiple sort https://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
         var fields = [],
             n_fields = args.length,
-            field, name, reverse, cmp;
+            field, name, cmp;
 
         var default_cmp = function (a, b) {
-            if (a == b) return 0;
-            return a < b ? -1 : 1;
+            if (a) {
+                if (b) {
+                    if (a == b) {
+                        return 0;
+                    }
+                    return a < b ? -1 : 1;
+                } else {
+                    return 1;
+                }
+            } else {
+                return b ? -1 : 0;
+            }
         };
 
         var getCmpFunc = function (primer, reverse) {
@@ -43,14 +53,14 @@ export class SortService {
         }
 
         // final comparison function
-        return function (A, B) {
-            var a, b, name, result;
+        return function (a, b) {
+            var name, result;
             for (var i = 0; i < n_fields; i++) {
                 result = 0;
                 field = fields[i];
                 name = field.name;
 
-                result = field.cmp(A[name], B[name]);
+                result = field.cmp(a[name], b[name]);
                 if (result !== 0) break;
             }
             return result;
