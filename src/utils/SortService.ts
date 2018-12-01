@@ -1,11 +1,13 @@
 export class SortService {
 
     static sortBy(args: any[]) { //multiple sort https://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
-        var fields = [],
-            n_fields = args.length,
-            field, name, cmp;
 
-        var default_cmp = function (a, b) {
+        let fields = [];
+        const n_fields = args.length;
+        let field, name, cmp;
+
+
+        let default_cmp = function (a, b) {
             if (a) {
                 if (b) {
                     if (a == b) {
@@ -20,8 +22,9 @@ export class SortService {
             }
         };
 
-        var getCmpFunc = function (primer, reverse) {
-            var dfc = default_cmp, // closer in scope
+
+        let getCmpFunc = function (primer, reverse) {
+            let dfc = default_cmp, // closer in scope
                 cmp = default_cmp;
             if (primer) {
                 cmp = function (a, b) {
@@ -37,7 +40,7 @@ export class SortService {
         };
 
         // preprocess sorting options
-        for (var i = 0; i < n_fields; i++) {
+        for (let i = 0; i < n_fields; i++) {
             field = args[i];
             if (typeof field === 'string') {
                 name = field;
@@ -52,10 +55,11 @@ export class SortService {
             });
         }
 
+
         // final comparison function
         return function (a, b) {
-            var name, result;
-            for (var i = 0; i < n_fields; i++) {
+            let name, result;
+            for (let i = 0; i < n_fields; i++) {
                 result = 0;
                 field = fields[i];
                 name = field.name;
