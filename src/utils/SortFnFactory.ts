@@ -1,6 +1,6 @@
-export class SortService {
+export class SortFnFactory {
 
-    static sortBy(args: any[]) { //multiple sort https://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
+    static getSortFn(args: any[]) { //multiple sort https://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
 
         let fields = [];
         const n_fields = args.length;

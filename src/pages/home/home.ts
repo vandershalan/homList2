@@ -6,7 +6,7 @@ import {OptionsComponent} from "../../components/options/options";
 import {ListOptions} from "../../model/listOptions";
 import {Item, ItemType} from "../../model/item";
 import {List} from "../../model/list";
-import {Category} from "../../model/category";
+// import {Category} from "../../model/category";
 import {Observable} from "rxjs";
 import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
 
@@ -17,11 +17,11 @@ import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
 export class HomePage implements OnInit {
 
     dbAllLists: AngularFireList<any>;
-    dbList: AngularFireList<any>;
+    // dbList: AngularFireList<any>;
     dbItemsList: AngularFireList<any>;
-    dbCategories: AngularFireList<any>;
+    // dbCategories: AngularFireList<any>;
     items: Observable<Item[]>;
-    categories: Observable<Category[]>;
+    // categories: Observable<Category[]>;
     item: Item;
 
     rd = (val) => typeof val === 'string' ? DiacriticsRemoval.removeDiacritics(val.toLowerCase()) : val;
@@ -44,14 +44,14 @@ export class HomePage implements OnInit {
         const fireAllListsPath = "/lists";
         const fireCurrentListPath = fireAllListsPath + "/" + this.item.listRef;
         const fireCurrentListItemsPath = fireCurrentListPath + "/items";
-        const fireCurrentListCategoriesPath = fireCurrentListPath + "/categories";
+        // const fireCurrentListCategoriesPath = fireCurrentListPath + "/categories";
 
         this.dbAllLists = this.afDatabase.list(fireAllListsPath);
         this.dbItemsList = this.afDatabase.list(fireCurrentListItemsPath);
-        this.dbCategories = this.afDatabase.list(fireCurrentListCategoriesPath);
+        // this.dbCategories = this.afDatabase.list(fireCurrentListCategoriesPath);
 
         this.items = this.dbItemsList.valueChanges();
-        this.categories = this.dbCategories.valueChanges();
+        // this.categories = this.dbCategories.valueChanges();
 
         console.log("firePath: " + fireCurrentListPath);
     }
@@ -117,7 +117,7 @@ export class HomePage implements OnInit {
 
 
     executed(item: Item) {
-        console.log("item: " + JSON.stringify(item));
+        console.log("executed item: " + JSON.stringify(item));
 
         if (item.type === ItemType.List) {
         }

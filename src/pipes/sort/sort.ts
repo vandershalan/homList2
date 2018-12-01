@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {Item} from "../../model/item";
-import {SortService} from "../../utils/SortService";
+import {SortFnFactory} from "../../utils/SortFnFactory";
 
 
 @Pipe({
@@ -16,6 +16,6 @@ export class SortPipe implements PipeTransform {
 
         if(!sortOptions) return items;
 
-        return items.sort(SortService.sortBy(sortOptions));
+        return items.sort(SortFnFactory.getSortFn(sortOptions));
     }
 }

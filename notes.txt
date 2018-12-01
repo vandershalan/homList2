@@ -1,0 +1,12 @@
+# Running app with console output in browser
+ionic serve -c
+
+# Checking list of connected devices
+ionic cordova run android --list
+
+# Running app on phone in developer mode
+ionic cordova run android --device
+
+# Running app on phone in production mode (currently does not work)
+ionic cordova run android --prod --release
+
