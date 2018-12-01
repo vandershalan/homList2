@@ -71,6 +71,7 @@ export class HomePage implements OnInit {
         popover.onDidDismiss((optionsData) => {
             if (optionsData) {
                 this.listOptions = optionsData.listOptions;
+                //this.listOptions = Object.assign({}, optionsData.listOptions);
             }
         });
         popover.present({
@@ -85,11 +86,16 @@ export class HomePage implements OnInit {
         let addModal = this.modalCtrl.create(NewItemPage, {itemName});
         addModal.onDidDismiss(item => {
             if (item) {
-                this.searchValue = null;
+                this.clearSearchValue();
                 this.addItem(item);
             }
         });
         addModal.present();
+    }
+
+
+    clearSearchValue () {
+        this.searchValue = null;
     }
 
 
@@ -116,14 +122,25 @@ export class HomePage implements OnInit {
     }
 
 
-    executed(item: Item) {
-        console.log("executed item: " + JSON.stringify(item));
-
+    markAsDone(item: Item) {
         if (item.type === ItemType.List) {
         }
         item.active = false;
+        this.updateItemInDB(item);
+    }
+
+    markAsActive(item: Item) {
+        item.active = true;
+        this.clearSearchValue();
+        this.updateItemInDB(item);
+    }
+
+
+    updateItemInDB(item: Item) {
+        console.log("update item: " + JSON.stringify(item));
         this.dbItemsList.update(item.id, item);
     }
+
 
 
     reorderItems(indexes) {

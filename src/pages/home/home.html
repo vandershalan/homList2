@@ -19,14 +19,14 @@
     <ion-row align-items-center nowrap>
         <ion-searchbar [(ngModel)]="searchValue" no-padding padding-vertical padding-right>
         </ion-searchbar>
-        <button ion-button icon-only (click)="showNewItemPage(searchValue)">
+        <button id="searchAddButton" ion-button icon-only (click)="showNewItemPage(searchValue)">
             <ion-icon name="add"></ion-icon>
         </button>
     </ion-row>
 
-    <ion-list *ngIf="((listOptions.searchInActive || listOptions.searchInDone) && searchValue) || listOptions.showActive || listOptions.showDone">
+    <ion-list>
 
-        <ng-container *ngFor="let itm of items | async | filter: searchValue | sort: [{name: 'category'}, {name: 'active', reverse: true}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}]; let i =index">
+        <ng-container *ngFor="let itm of items | async | filter: searchValue : listOptions.showActive : listOptions.showDone : listOptions.searchInActive : listOptions.searchInDone  | sort: [{name: 'category'}, {name: 'active', reverse: true}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}]; let i =index">
 
             <ion-item-divider *ngIf="isCategoryChanged(i, itm.category)" color="light">
                 <!--<ion-icon name="cos" item-start></ion-icon>-->
@@ -34,7 +34,7 @@
             </ion-item-divider>
 
             <ion-item-group reorder="{{listOptions.sortField === 'order'}}" (ionItemReorder)="reorderItems($event)">
-                <ng-container *ngIf="((listOptions.searchInActive && searchValue) || listOptions.showActive) && itm.active">
+                <ng-container *ngIf="itm.active">
                     <ion-item-sliding>
                         <ion-item *ngIf="itm.type == 'list'" (click)="goToListPage(itm)">
                             <ion-icon name="list" item-start></ion-icon>
@@ -44,8 +44,8 @@
                             <ion-icon name="pricetag" item-start></ion-icon>
                             {{itm.name}}
                         </ion-item>
-                        <ion-item-options *ngIf="itm.type != 'list'" side="left" (ionSwipe)="executed(itm)">
-                            <button ion-button expandable (click)="executed(itm)">Zrobione</button>
+                        <ion-item-options *ngIf="itm.type != 'list'" side="left" (ionSwipe)="markAsDone(itm)">
+                            <button ion-button expandable (click)="markAsDone(itm)">Zrobione</button>
                         </ion-item-options>
                         <ion-item-options side="right">
                             <button ion-button (click)="removeItem(itm)">Usuń</button>
@@ -54,12 +54,15 @@
                 </ng-container>
             </ion-item-group>
 
-            <ion-item-group *ngIf="((listOptions.searchInDone && searchValue) || listOptions.showDone) && !itm.active" reorder="{{listOptions.sortField === 'order'}}" (ionItemReorder)="reorderItems($event)">
+            <ion-item-group *ngIf="!itm.active" reorder="{{listOptions.sortField === 'order'}}" (ionItemReorder)="reorderItems($event)">
                 <ion-item-sliding>
                     <ion-item class="item-done" (click)="goToListPage(itm)">
                         <ion-icon *ngIf="itm.type == 'list'" name="list" item-start></ion-icon>
                         <ion-icon *ngIf="itm.type != 'list'" name="pricetag" item-start></ion-icon>
                         {{itm.name}}
+                        <button ion-button default color="light" (click)="markAsActive(itm)" item-end>
+                            <ion-icon class="ion-icon-add" name="add"></ion-icon>
+                        </button>
                     </ion-item>
                     <ion-item-options side="right">
                         <button ion-button (click)="removeItem(itm)">Usuń</button>
