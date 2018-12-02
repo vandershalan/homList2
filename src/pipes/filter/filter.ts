@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {Item} from "../../model/item";
 import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
-import {ListOptions} from "../../model/listOptions";
 
 
 @Pipe({
@@ -10,6 +9,8 @@ import {ListOptions} from "../../model/listOptions";
 export class FilterPipe implements PipeTransform {
 
     transform(items: Item[], searchValue: string, showActive: boolean, showDone: boolean, searchInActive: boolean, searchInDone: boolean): Item[] {
+
+        //console.log("FilterPipe");
 
         if(!items) return [];
 

@@ -122,6 +122,14 @@ export class HomePage implements OnInit {
     }
 
 
+    doActionIfSwipeIsEnough(slidingItem, item) {
+        // if (slidingItem.getOpenAmount() < -50) {
+        if (slidingItem.getSlidingPercent() < -1.1) {
+            this.markAsDone(item);
+        }
+    }
+
+
     markAsDone(item: Item) {
         if (item.type === ItemType.List) {
         }
@@ -137,7 +145,7 @@ export class HomePage implements OnInit {
 
 
     updateItemInDB(item: Item) {
-        console.log("update item: " + JSON.stringify(item));
+        //console.log("update item: " + JSON.stringify(item));
         this.dbItemsList.update(item.id, item);
     }
 
@@ -173,6 +181,10 @@ export class HomePage implements OnInit {
         alert.present();
     }
 
+
+    consoleLog(str: string) {
+        console.log(str);
+    }
 }
 
 
