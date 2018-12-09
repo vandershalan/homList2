@@ -1,20 +1,25 @@
 <!-- Generated template for the OptionsComponent component -->
 <ion-item-group no-lines>
-    <ion-item-divider color="light">View</ion-item-divider>
+    <ion-item-divider color="light">Show</ion-item-divider>
     <ion-item>
-        <ion-label>Show active</ion-label>
-        <ion-toggle [(ngModel)]="listOptions.showActive" (ionChange)="close()"></ion-toggle>
-    </ion-item>
-    <ion-item>
-        <ion-label>Show done</ion-label>
+        <ion-label>Done</ion-label>
         <ion-toggle [(ngModel)]="listOptions.showDone" (ionChange)="close()"></ion-toggle>
     </ion-item>
     <ion-item>
-        <ion-label>Search in active</ion-label>
+        <ion-label>Active</ion-label>
+        <ion-toggle [(ngModel)]="listOptions.showActive" (ionChange)="close()"></ion-toggle>
+    </ion-item>
+    <ion-item>
+        <ion-label>Categories</ion-label>
+        <ion-toggle [(ngModel)]="listOptions.showCategories" (ionChange)="close()"></ion-toggle>
+    </ion-item>
+    <ion-item-divider color="light">Search in</ion-item-divider>
+    <ion-item>
+        <ion-label>Active</ion-label>
         <ion-toggle [(ngModel)]="listOptions.searchInActive" (ionChange)="close()"></ion-toggle>
     </ion-item>
     <ion-item>
-        <ion-label>Search in done</ion-label>
+        <ion-label>Done</ion-label>
         <ion-toggle [(ngModel)]="listOptions.searchInDone" (ionChange)="close()"></ion-toggle>
     </ion-item>
     <ion-item-divider color="light">Sort by</ion-item-divider>

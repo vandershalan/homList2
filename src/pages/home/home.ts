@@ -6,9 +6,10 @@ import {OptionsComponent} from "../../components/options/options";
 import {ListOptions} from "../../model/listOptions";
 import {Item, ItemType} from "../../model/item";
 import {List} from "../../model/list";
-// import {Category} from "../../model/category";
+import {Category} from "../../model/category";
 import {Observable} from "rxjs";
 import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
+import {map, switchMap, tap} from "rxjs/operators";
 
 @Component({
     selector: 'page-home',
@@ -19,9 +20,9 @@ export class HomePage implements OnInit {
     dbAllLists: AngularFireList<any>;
     // dbList: AngularFireList<any>;
     dbItemsList: AngularFireList<any>;
-    // dbCategories: AngularFireList<any>;
+    dbCategories: AngularFireList<any>;
     items: Observable<Item[]>;
-    // categories: Observable<Category[]>;
+    categories: Observable<Category[]>;
     item: Item;
 
     rd = (val) => typeof val === 'string' ? DiacriticsRemoval.removeDiacritics(val.toLowerCase()) : val;
@@ -31,8 +32,6 @@ export class HomePage implements OnInit {
     searchValue: string;
 
     private prevCategory: string ;
-
-    //sortOptions: any = {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc};
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase,
                 public popoverCtrl: PopoverController, public modalCtrl: ModalController) {
@@ -44,16 +43,33 @@ export class HomePage implements OnInit {
         const fireAllListsPath = "/lists";
         const fireCurrentListPath = fireAllListsPath + "/" + this.item.listRef;
         const fireCurrentListItemsPath = fireCurrentListPath + "/items";
-        // const fireCurrentListCategoriesPath = fireCurrentListPath + "/categories";
+        const fireCurrentListCategoriesPath = fireCurrentListPath + "/categories";
 
+        this.dbCategories = this.afDatabase.list(fireCurrentListCategoriesPath);
         this.dbAllLists = this.afDatabase.list(fireAllListsPath);
         this.dbItemsList = this.afDatabase.list(fireCurrentListItemsPath);
-        // this.dbCategories = this.afDatabase.list(fireCurrentListCategoriesPath);
 
+        this.categories = this.dbCategories.valueChanges();
         this.items = this.dbItemsList.valueChanges();
-        // this.categories = this.dbCategories.valueChanges();
 
-        console.log("firePath: " + fireCurrentListPath);
+        let aitems = this.items.pipe(map( itms => itms.map(itm => {this.categories.pipe(map (cts => cts.find(c => c.name === itm.category)), map(c => {return c ? c.order : 100})).subscribe(o => {itm.categoryOrder = o}); return itm})));
+
+        //console.log(this.categories.pipe(map (cts => cts.find(c => c.name === 'Chemia')), map(c => c.order)).subscribe(xx => console.log(xx)));
+
+
+        this.categories.subscribe(value => {console.log(value)});
+        this.items.subscribe(value => {console.log(value)});
+
+        aitems.subscribe(value => {console.log(value)});
+
+        this.items.pipe(tap(itms => itms.map(itm => console.log(JSON.stringify(itm)))));
+
+        console.log("1 home: items: " +  JSON.stringify(this.items));
+        console.log("2 home: itemsWithCategoryOrder");
+        console.log("3 home: items: " +  JSON.stringify(aitems));
+
+
+        console.log("9 firePath: " + fireCurrentListPath);
     }
 
 

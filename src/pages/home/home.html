@@ -26,16 +26,17 @@
 
     <ion-list>
 
-        <ng-container *ngFor="let itm of items | async | filter: searchValue : listOptions.showActive : listOptions.showDone : listOptions.searchInActive : listOptions.searchInDone  | sort: [{name: 'category'}, {name: 'active', reverse: true}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}]; let i =index">
+        <ng-container *ngFor="let itm of items | async | filter: searchValue : listOptions.showActive : listOptions.showDone : listOptions.searchInActive : listOptions.searchInDone  | sort: [{name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}] : this.listOptions.showCategories : categories; let i = index">
 
-            <ion-item-divider *ngIf="isCategoryChanged(i, itm.category)" color="light">
+            <ion-item-divider *ngIf="listOptions.showCategories && isCategoryChanged(i, itm.category)" color="light">
                 <!--<ion-icon name="cos" item-start></ion-icon>-->
                 {{itm.category}}
             </ion-item-divider>
 
             <ion-item-group reorder="{{listOptions.sortField === 'order'}}" (ionItemReorder)="reorderItems($event)">
                 <ng-container *ngIf="itm.active && (listOptions.showActive || (listOptions.searchInActive && searchValue))">
-                    <ion-item-sliding (ionDrag)="doActionIfSwipeIsEnough($event, itm)">
+                    <!--<ion-item-sliding (ionDrag)="doActionIfSwipeIsEnough($event, itm)">-->
+                    <ion-item-sliding>
                         <ion-item *ngIf="itm.type == 'list'" (click)="goToListPage(itm)">
                             <ion-icon name="list" item-start></ion-icon>
                             {{itm.name}}
@@ -47,7 +48,7 @@
                                 <ion-icon class="ion-icon-done" name="checkmark"></ion-icon>
                             </button>
                         </ion-item>
-                        <ion-item-options *ngIf="itm.type != 'list'" side="left" (ionSwipe)="consoleLog('swipe')">
+                        <ion-item-options *ngIf="itm.type != 'list'" side="left" (ionSwipe)="markAsDone(itm)">
                             <button ion-button (click)="markAsDone(itm)">Done</button>
                         </ion-item-options>
                         <ion-item-options side="right">
