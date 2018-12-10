@@ -7,7 +7,7 @@ import {ListOptions} from "../../model/listOptions";
 import {Item, ItemType} from "../../model/item";
 import {List} from "../../model/list";
 import {Category} from "../../model/category";
-import {Observable} from "rxjs";
+import {merge, Observable} from "rxjs";
 import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
 import {map, switchMap, tap} from "rxjs/operators";
 
@@ -49,27 +49,15 @@ export class HomePage implements OnInit {
         this.dbAllLists = this.afDatabase.list(fireAllListsPath);
         this.dbItemsList = this.afDatabase.list(fireCurrentListItemsPath);
 
-        this.categories = this.dbCategories.valueChanges();
-        this.items = this.dbItemsList.valueChanges();
-
-        let aitems = this.items.pipe(map( itms => itms.map(itm => {this.categories.pipe(map (cts => cts.find(c => c.name === itm.category)), map(c => {return c ? c.order : 100})).subscribe(o => {itm.categoryOrder = o}); return itm})));
-
-        //console.log(this.categories.pipe(map (cts => cts.find(c => c.name === 'Chemia')), map(c => c.order)).subscribe(xx => console.log(xx)));
-
+        this.categories = this.dbCategories.valueChanges().pipe(tap (cts => cts.map (ct => this.items.pipe(map(itms => itms.filter(itm => itm.category === ct.name))))));
+        this.items = this.dbItemsList.valueChanges().pipe(map( itms => itms.map(itm => {this.categories.pipe(map (cts => cts.find(c => c.name === itm.category)), map(c => {return c ? c.order : 999})).subscribe(o => {itm.categoryOrder = o}); return itm})));;
 
         this.categories.subscribe(value => {console.log(value)});
         this.items.subscribe(value => {console.log(value)});
 
-        aitems.subscribe(value => {console.log(value)});
+        //this.items.pipe(tap(itms => itms.map(itm => console.log(JSON.stringify(itm)))));
 
-        this.items.pipe(tap(itms => itms.map(itm => console.log(JSON.stringify(itm)))));
-
-        console.log("1 home: items: " +  JSON.stringify(this.items));
-        console.log("2 home: itemsWithCategoryOrder");
-        console.log("3 home: items: " +  JSON.stringify(aitems));
-
-
-        console.log("9 firePath: " + fireCurrentListPath);
+        console.log("firePath: " + fireCurrentListPath);
     }
 
 

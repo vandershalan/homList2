@@ -16,13 +16,9 @@ export class FilterPipe implements PipeTransform {
 
         if (searchValue) {
             searchValue = this.normalize(searchValue);
-            items = items.filter( itm => {
-                return (((searchInActive && itm.active) || (searchInDone && !itm.active)) && this.normalize(itm.name).includes(searchValue));
-            });
+            items = items.filter( itm => ((searchInActive && itm.active) || (searchInDone && !itm.active)) && this.normalize(itm.name).includes(searchValue));
         } else {
-            items = items.filter( itm => {
-                return (showActive && itm.active) || (showDone && !itm.active);
-            });
+            items = items.filter( itm => (showActive && itm.active) || (showDone && !itm.active));
         }
 
         return items;
