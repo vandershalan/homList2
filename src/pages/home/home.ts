@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertController, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
+import {AlertController, ModalController, NavController, NavOptions, NavParams, PopoverController} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {NewItemPage} from "../newItem/newItem";
 import {OptionsComponent} from "../../components/options/options";
@@ -7,9 +7,9 @@ import {ListOptions} from "../../model/listOptions";
 import {Item, ItemType} from "../../model/item";
 import {List} from "../../model/list";
 import {Category} from "../../model/category";
-import {merge, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
-import {map, switchMap, tap} from "rxjs/operators";
+import {CategoriesPage} from "../categories/categories";
 
 @Component({
     selector: 'page-home',
@@ -49,8 +49,8 @@ export class HomePage implements OnInit {
         this.dbAllLists = this.afDatabase.list(fireAllListsPath);
         this.dbItemsList = this.afDatabase.list(fireCurrentListItemsPath);
 
-        this.categories = this.dbCategories.valueChanges().pipe(tap (cts => cts.map (ct => this.items.pipe(map(itms => itms.filter(itm => itm.category === ct.name))))));
-        this.items = this.dbItemsList.valueChanges().pipe(map( itms => itms.map(itm => {this.categories.pipe(map (cts => cts.find(c => c.name === itm.category)), map(c => {return c ? c.order : 999})).subscribe(o => {itm.categoryOrder = o}); return itm})));;
+        this.categories = this.dbCategories.valueChanges(); //.pipe(tap (cts => cts.map (ct => this.items.pipe(map(itms => itms.filter(itm => itm.category === ct.name))))));
+        this.items = this.dbItemsList.valueChanges(); //.pipe(map( itms => itms.map(itm => {this.categories.pipe(map (cts => cts.find(c => c.name === itm.category)), map(c => {return c ? c.order : 999})).subscribe(o => {itm.categoryOrder = o}); return itm})));;
 
         this.categories.subscribe(value => {console.log(value)});
         this.items.subscribe(value => {console.log(value)});
@@ -70,7 +70,7 @@ export class HomePage implements OnInit {
     }
 
 
-    showOptions(myEvent) {
+    showOptionsPopover(myEvent) {
         const popover = this.popoverCtrl.create(OptionsComponent, {listOptions: this.listOptions});
         popover.onDidDismiss((optionsData) => {
             if (optionsData) {
@@ -84,10 +84,12 @@ export class HomePage implements OnInit {
     }
 
 
-    showNewItemPage(itemName) {
-        if (itemName == null) itemName = "";
+    showNewItemModal() {
+        if (this.searchValue == null) this.searchValue = "";
 
-        let addModal = this.modalCtrl.create(NewItemPage, {itemName});
+        const list = new List(this.item.listRef, this.item.name);
+
+        let addModal = this.modalCtrl.create(NewItemPage, {itemName: this.searchValue, list: list});
         addModal.onDidDismiss(item => {
             if (item) {
                 this.clearSearchValue();

@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Item} from "../../model/item";
 import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
 
 
@@ -8,20 +7,16 @@ import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
 })
 export class FilterPipe implements PipeTransform {
 
-    transform(items: Item[], searchValue: string, showActive: boolean, showDone: boolean, searchInActive: boolean, searchInDone: boolean): Item[] {
+    transform(strArr: string[], searchValue: string): string[] {
 
-        //console.log("FilterPipe");
-
-        if(!items) return [];
+        if(!strArr) return [];
 
         if (searchValue) {
             searchValue = this.normalize(searchValue);
-            items = items.filter( itm => ((searchInActive && itm.active) || (searchInDone && !itm.active)) && this.normalize(itm.name).includes(searchValue));
-        } else {
-            items = items.filter( itm => (showActive && itm.active) || (showDone && !itm.active));
+            strArr = strArr.filter( str => (this.normalize(str).includes(searchValue)));
         }
 
-        return items;
+        return strArr;
     }
 
 

@@ -7,7 +7,7 @@
             {{item.name}}
         </ion-title>
         <ion-buttons end>
-            <button ion-button icon-only (click)="showOptions($event)">
+            <button ion-button icon-only (click)="showOptionsPopover($event)">
                 <ion-icon name="more"></ion-icon>
             </button>
         </ion-buttons>
@@ -19,14 +19,17 @@
     <ion-row align-items-center nowrap>
         <ion-searchbar [(ngModel)]="searchValue" no-padding padding-vertical padding-right>
         </ion-searchbar>
-        <button id="searchAddButton" ion-button icon-only (click)="showNewItemPage(searchValue)">
+        <button id="searchAddButton" ion-button icon-only (click)="showNewItemModal()">
             <ion-icon name="add"></ion-icon>
         </button>
     </ion-row>
 
     <ion-list>
 
-        <ng-container *ngFor="let itm of items | async | filter: searchValue : listOptions.showActive : listOptions.showDone : listOptions.searchInActive : listOptions.searchInDone  | sort: [{name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}] : this.listOptions.showCategories : categories; let i = index">
+        <ng-container *ngFor="let itm of items | async
+            | itemFilter: searchValue : listOptions.showActive : listOptions.showDone : listOptions.searchInActive : listOptions.searchInDone
+            | sort: [listOptions.showCategories ? 'categoryOrder' : '', {name: 'active', reverse: true}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}];
+             let i = index">
 
             <ion-item-divider *ngIf="listOptions.showCategories && isCategoryChanged(i, itm.category)" color="light">
                 <!--<ion-icon name="cos" item-start></ion-icon>-->

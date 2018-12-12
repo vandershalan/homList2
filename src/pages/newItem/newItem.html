@@ -1,8 +1,15 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>New</ion-title>
-    </ion-navbar>
-</ion-header>
+    <ion-toolbar>
+        <ion-title>
+            Add
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">
+                <span ion-text color="primary" showWhen="ios">Cancel</span>
+                <ion-icon name="md-close" showWhen="android,windows,core"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar></ion-header>
 
 <ion-content padding>
 
@@ -16,8 +23,12 @@
             <ion-input type="text" value="" [(ngModel)]="description"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label floating>Category</ion-label>
-            <ion-input type="text" value="" [(ngModel)]="category"></ion-input>
+            <!--<ion-label floating>Category</ion-label>-->
+            <!--<ion-input type="text" value="" [(ngModel)]="category"></ion-input>-->
+            <button ion-button block (click)="goToCategoriesPage()">
+                <ion-icon name="pricetag" padding></ion-icon>
+                {{category}}
+            </button>
         </ion-item>
 
     </ion-list>
@@ -33,6 +44,13 @@
             <button ion-button color="primary" block (click)="addItem(itemType.List)">
                 <ion-icon name="list" padding></ion-icon>
                 Add as List
+            </button>
+        </p>
+    </div>
+    <div padding>
+        <p>
+            <button ion-button block color="light" (click)="dismiss()">
+                Cancel
             </button>
         </p>
     </div>
