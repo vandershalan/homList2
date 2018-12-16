@@ -18,6 +18,7 @@ import {OrderModule} from "ngx-order-pipe";
 import {FilterPipeModule} from "ngx-filter-pipe";
 import {CategoriesPage} from "../pages/categories/categories";
 import {ItemFilterPipe} from "../pipes/filter/itemFilter";
+import {CategoryFilterPipe} from "../pipes/filter/categoryFilter";
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -38,6 +39,7 @@ export const firebaseConfig = {
         OptionsComponent,
         FilterPipe,
         ItemFilterPipe,
+        CategoryFilterPipe,
         SortPipe
     ],
     imports: [

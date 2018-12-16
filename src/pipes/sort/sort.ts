@@ -1,5 +1,4 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {Item} from "../../model/item";
 import {SortFnFactory} from "../../utils/SortFnFactory";
 
 
@@ -8,12 +7,12 @@ import {SortFnFactory} from "../../utils/SortFnFactory";
 })
 export class SortPipe implements PipeTransform {
 
-    transform(items: Item[], sortOptions: any[]): Item[] {
+    transform(entries: any[], sortOptions: any[]): any[] {
 
-        if (!items) return [];
+        if (!entries) return [];
 
-        console.log("SortPipe: fullSortOptions: " + JSON.stringify(sortOptions));
+        // console.log("SortPipe: fullSortOptions: " + JSON.stringify(sortOptions));
 
-        return items.sort(SortFnFactory.getSortFn(sortOptions));
+        return entries.sort(SortFnFactory.getSortFn(sortOptions));
     }
 }

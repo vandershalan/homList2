@@ -7,6 +7,9 @@
             {{item.name}}
         </ion-title>
         <ion-buttons end>
+            <button ion-button icon-only (click)="goToCategoriesPage()">
+                <ion-icon name="paper" padding-right></ion-icon>
+            </button>
             <button ion-button icon-only (click)="showOptionsPopover($event)">
                 <ion-icon name="more"></ion-icon>
             </button>
@@ -19,7 +22,7 @@
     <ion-row align-items-center nowrap>
         <ion-searchbar [(ngModel)]="searchValue" no-padding padding-vertical padding-right>
         </ion-searchbar>
-        <button id="searchAddButton" ion-button icon-only (click)="showNewItemModal()">
+        <button id="searchAddButton" ion-button icon-only (click)="goToNewItemPage()">
             <ion-icon name="add"></ion-icon>
         </button>
     </ion-row>

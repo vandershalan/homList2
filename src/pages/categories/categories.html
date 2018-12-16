@@ -4,7 +4,7 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>
-            {{list.name}}
+            Categories
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -12,34 +12,24 @@
 <ion-content padding-horizontal>
 
     <ion-row align-items-center nowrap>
-        <ion-searchbar [(ngModel)]="searchValue" no-padding padding-vertical padding-right>
+        <ion-searchbar #nameInput [(ngModel)]="searchValue" no-padding padding-vertical padding-right>
         </ion-searchbar>
-        <button id="searchAddButton" ion-button icon-only (click)="showNewItemPage(searchValue)">
+        <button id="searchAddButton" ion-button icon-only (click)="showNewCategoryPage(searchValue)">
             <ion-icon name="add"></ion-icon>
         </button>
     </ion-row>
 
-    <ion-list>
-
-        <ng-container *ngFor="let ctgr of categories | async | filter: searchValue">
-
-            <ion-item-group reorder (ionItemReorder)="reorderCategories($event)">
-                <ion-item-sliding>
-                    <ion-item (click)="goToEditPage(ctgr)">
-                        <ion-icon name="pricetag" item-start></ion-icon>
-                        {{ctgr.name}}
-                        <button ion-button default color="light" (click)="markAsDone(ctgr)" item-end>
-                            <ion-icon class="ion-icon-done" name="checkmark"></ion-icon>
-                        </button>
-                    </ion-item>
-                    <ion-item-options side="right">
-                        <button ion-button (click)="removeCategory(ctgr)">Remove</button>
-                    </ion-item-options>
-                </ion-item-sliding>
-            </ion-item-group>
-
-        </ng-container>
-
+    <ion-list radio-group reorder [(ngModel)]="categoryName" (ionItemReorder)="reorderCategories($event)">
+        <ion-item-sliding *ngFor="let ctgr of categories | async | categoryFilter: searchValue">
+            <ion-item (click)="goToEditCategoryPage(ctgr)">
+                <ion-icon name="paper" item-start></ion-icon>
+                <ion-label>{{ctgr.name}}</ion-label>
+                <ion-radio *ngIf="categoryName" checked="{{ctgr.name === categoryName}}" item-end value="{{ctgr.name}}" (ionSelect)="categoryChosen()"></ion-radio>
+            </ion-item>
+            <ion-item-options side="right">
+                <button ion-button (click)="removeCategory(ctgr)">Remove</button>
+            </ion-item-options>
+        </ion-item-sliding>
     </ion-list>
 
 </ion-content>

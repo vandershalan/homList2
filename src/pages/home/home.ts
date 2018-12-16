@@ -18,8 +18,7 @@ import {CategoriesPage} from "../categories/categories";
 export class HomePage implements OnInit {
 
     dbAllLists: AngularFireList<any>;
-    // dbList: AngularFireList<any>;
-    dbItemsList: AngularFireList<any>;
+    dbCurrentItemList: AngularFireList<any>;
     dbCategories: AngularFireList<any>;
     items: Observable<Item[]>;
     categories: Observable<Category[]>;
@@ -29,7 +28,10 @@ export class HomePage implements OnInit {
 
     listOptions: ListOptions = new ListOptions();
 
-    searchValue: string;
+    searchValue: string = '';
+
+    clearSearchValueFn = () => {this.searchValue = ''};
+
 
     private prevCategory: string ;
 
@@ -47,13 +49,14 @@ export class HomePage implements OnInit {
 
         this.dbCategories = this.afDatabase.list(fireCurrentListCategoriesPath);
         this.dbAllLists = this.afDatabase.list(fireAllListsPath);
-        this.dbItemsList = this.afDatabase.list(fireCurrentListItemsPath);
+        this.dbCurrentItemList = this.afDatabase.list(fireCurrentListItemsPath);
 
         this.categories = this.dbCategories.valueChanges(); //.pipe(tap (cts => cts.map (ct => this.items.pipe(map(itms => itms.filter(itm => itm.category === ct.name))))));
-        this.items = this.dbItemsList.valueChanges(); //.pipe(map( itms => itms.map(itm => {this.categories.pipe(map (cts => cts.find(c => c.name === itm.category)), map(c => {return c ? c.order : 999})).subscribe(o => {itm.categoryOrder = o}); return itm})));;
+        this.items = this.dbCurrentItemList.valueChanges(); //.pipe(map( itms => itms.map(itm => {this.categories.pipe(map (cts => cts.find(c => c.name === itm.category)), map(c => {return c ? c.order : 999})).subscribe(o => {itm.categoryOrder = o}); return itm})));;
 
         this.categories.subscribe(value => {console.log(value)});
         this.items.subscribe(value => {console.log(value)});
+
 
         //this.items.pipe(tap(itms => itms.map(itm => console.log(JSON.stringify(itm)))));
 
@@ -84,24 +87,9 @@ export class HomePage implements OnInit {
     }
 
 
-    showNewItemModal() {
-        if (this.searchValue == null) this.searchValue = "";
-
-        const list = new List(this.item.listRef, this.item.name);
-
-        let addModal = this.modalCtrl.create(NewItemPage, {itemName: this.searchValue, list: list});
-        addModal.onDidDismiss(item => {
-            if (item) {
-                this.clearSearchValue();
-                this.addItem(item);
-            }
-        });
-        addModal.present();
-    }
-
-
-    clearSearchValue () {
-        this.searchValue = null;
+    goToNewItemPage(item) {
+        //if (this.searchValue == null) this.searchValue = "";
+        this.navCtrl.push(NewItemPage, {itemName: this.searchValue, dbAllLists: this.dbAllLists, dbCurrentItemList: this.dbCurrentItemList, dbCategories: this.dbCategories, clearSearchValueFn: this.clearSearchValueFn});
     }
 
 
@@ -115,16 +103,8 @@ export class HomePage implements OnInit {
     }
 
 
-    addItem(item: Item) {
-        if (item.type === ItemType.List) {
-            const listRef = this.dbAllLists.push({});
-            listRef.set(new List(listRef.key, item.name));
-            item.listRef = listRef.key;
-        }
-
-        const itemRef = this.dbItemsList.push({});
-        item.id = itemRef.key;
-        itemRef.set(item);
+    goToCategoriesPage() {
+        this.navCtrl.push(CategoriesPage, {categoryName: null, dbCategories: this.dbCategories});
     }
 
 
@@ -140,19 +120,20 @@ export class HomePage implements OnInit {
         if (item.type === ItemType.List) {
         }
         item.active = false;
+        this.clearSearchValueFn();
         this.updateItemInDB(item);
     }
 
     markAsActive(item: Item) {
         item.active = true;
-        this.clearSearchValue();
+        this.clearSearchValueFn();
         this.updateItemInDB(item);
     }
 
 
     updateItemInDB(item: Item) {
         //console.log("update item: " + JSON.stringify(item));
-        this.dbItemsList.update(item.id, item);
+        this.dbCurrentItemList.update(item.id, item);
     }
 
 
@@ -179,7 +160,7 @@ export class HomePage implements OnInit {
                         if (ItemType.List === item.type) {
                             this.dbAllLists.remove(item.listRef);
                         }
-                        this.dbItemsList.remove(item.id);
+                        this.dbCurrentItemList.remove(item.id);
                     }
                 }
             ]
