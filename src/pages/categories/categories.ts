@@ -23,7 +23,7 @@ export class CategoriesPage implements OnInit {
 
     searchValue: string = '';
 
-    cat2 = [];
+    categoriesArray = [];
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase) {
         this.categoryName = navParams.get('categoryName');
@@ -35,7 +35,9 @@ export class CategoriesPage implements OnInit {
     ngOnInit() {
         this.categories = this.dbCategories.valueChanges().pipe(map(ctgrs => new SortPipe().transform(ctgrs, ['order'])));
 
-        this.categories.subscribe(ctgrs => {this.cat2 = ctgrs as Category[]});
+        this.categories.subscribe(ctgrs => {
+            this.categoriesArray = ctgrs as Category[]
+        });
 
         this.categories.subscribe(value => {
             console.log(value)
@@ -68,28 +70,23 @@ export class CategoriesPage implements OnInit {
 
 
     reorderCategories(indexes) {
-        console.log(indexes.from + " " + indexes.to);
-        // let c2: Observable<Category[]>;
 
-        // c2 = this.categories.pipe(map(ctgrs => ctgrs.map((ctgr, i) => {if (i === indexes.from) {ctgr.order = ctgr.order + 100};return ctgr})));
+        // console.log(indexes.from + " " + indexes.to);
 
-        // c2.subscribe(ctgrs => {this.cat2 = ctgrs as Category[]});
+        this.categoriesArray[indexes.from].order = indexes.to;
+        this.updateCategoryInDB(this.categoriesArray[indexes.from]);
 
-        this.cat2[indexes.from].order = indexes.to;
-        for (let i = indexes.from; i < indexes.to; i++) {
-            this.cat2[i + 1].order = i;
+        if (indexes.from < indexes.to) {
+            for (let i = indexes.from; i < indexes.to; i ++) {
+                this.categoriesArray[i + 1].order = i;
+                this.updateCategoryInDB(this.categoriesArray[i + 1]);
+            }
+        } else {
+            for (let i = indexes.to; i < indexes.from; i ++) {
+                this.categoriesArray[i].order = i + 1;
+                this.updateCategoryInDB(this.categoriesArray[i]);
+            }
         }
-
-        for (let i = 0; i < this.cat2.length; i++) {
-            console.log(this.cat2[i]);
-        }
-
-        //this.categories = c2.pipe(map(ctgrs => new SortPipe().transform(ctgrs, ['order'])));
-
-        //let element = this.categories[indexes.from];
-        // console.log(c2);
-        // c2.subscribe(value => {console.log(value)});
-
     }
 
 
