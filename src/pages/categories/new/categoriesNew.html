@@ -1,0 +1,34 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button icon-only menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            New
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-list>
+        <ion-item>
+            <ion-label floating>Name</ion-label>
+            <ion-input #nameInput type="text" [(ngModel)]="categoryName"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Description</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="description"></ion-input>
+        </ion-item>
+    </ion-list>
+
+    <div padding>
+        <p>
+            <button ion-button color="primary" block (click)="addCategory()">
+                <ion-icon name="paper" padding></ion-icon>
+                Add category
+            </button>
+        </p>
+    </div>
+
+</ion-content>

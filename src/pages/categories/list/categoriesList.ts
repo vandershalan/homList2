@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
-import {Category} from "../../model/category";
+import {Category} from "../../../model/category";
 import {Observable} from "rxjs";
-import {List} from "../../model/list";
+import {List} from "../../../model/list";
 import {map} from "rxjs/operators";
-import {SortPipe} from "../../pipes/sort/sort";
+import {SortPipe} from "../../../pipes/sort/sort";
 
 @Component({
-    selector: 'page-categories',
-    templateUrl: 'categories.html'
+    selector: 'page-categories-list',
+    templateUrl: 'categoriesList.html'
 })
-export class CategoriesPage implements OnInit {
+export class CategoriesListPage implements OnInit {
 
     dbCategories: AngularFireList<any>;
     categories: Observable<Category[]>;
@@ -57,12 +57,6 @@ export class CategoriesPage implements OnInit {
     }
 
 
-    updateCategoryInDB(category: Category) {
-        console.log("update category: " + JSON.stringify(category));
-        this.dbCategories.update(category.id, category);
-    }
-
-
     categoryChosen() {
         this.setCategoryNameFn((this.categoryName));
         this.navCtrl.pop();
@@ -87,6 +81,12 @@ export class CategoriesPage implements OnInit {
                 this.updateCategoryInDB(this.categoriesArray[i]);
             }
         }
+    }
+
+
+    updateCategoryInDB(category: Category) {
+        console.log("update category: " + JSON.stringify(category));
+        this.dbCategories.update(category.id, category);
     }
 
 

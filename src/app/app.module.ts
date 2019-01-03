@@ -16,7 +16,7 @@ import {FilterPipe} from "../pipes/filter/filter";
 import {SortPipe} from "../pipes/sort/sort";
 import {OrderModule} from "ngx-order-pipe";
 import {FilterPipeModule} from "ngx-filter-pipe";
-import {CategoriesPage} from "../pages/categories/categories";
+import {CategoriesListPage} from "../pages/categories/list/categoriesList";
 import {ItemFilterPipe} from "../pipes/filter/itemFilter";
 import {CategoryFilterPipe} from "../pipes/filter/categoryFilter";
 
@@ -35,7 +35,7 @@ export const firebaseConfig = {
         MyApp,
         HomePage,
         NewItemPage,
-        CategoriesPage,
+        CategoriesListPage,
         OptionsComponent,
         FilterPipe,
         ItemFilterPipe,
@@ -55,7 +55,7 @@ export const firebaseConfig = {
         MyApp,
         HomePage,
         NewItemPage,
-        CategoriesPage,
+        CategoriesListPage,
         OptionsComponent
     ],
     providers: [

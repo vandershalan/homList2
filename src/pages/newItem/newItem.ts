@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {Item, ItemType} from "../../model/item";
-import {CategoriesPage} from "../categories/categories";
+import {CategoriesListPage} from "../categories/list/categoriesList";
 import {List} from "../../model/list";
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 
@@ -64,7 +64,7 @@ export class NewItemPage {
 
 
     goToCategoriesPage() {
-        this.navCtrl.push(CategoriesPage, {categoryName: this.categoryName, dbCategories: this.dbCategories, setCategoryNameFn: this.setCategoryNameFn});
+        this.navCtrl.push(CategoriesListPage, {categoryName: this.categoryName, dbCategories: this.dbCategories, setCategoryNameFn: this.setCategoryNameFn});
     }
 
 

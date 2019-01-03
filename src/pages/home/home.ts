@@ -9,7 +9,7 @@ import {List} from "../../model/list";
 import {Category} from "../../model/category";
 import {Observable} from "rxjs";
 import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
-import {CategoriesPage} from "../categories/categories";
+import {CategoriesListPage} from "../categories/list/categoriesList";
 
 @Component({
     selector: 'page-home',
@@ -104,7 +104,7 @@ export class HomePage implements OnInit {
 
 
     goToCategoriesPage() {
-        this.navCtrl.push(CategoriesPage, {categoryName: null, dbCategories: this.dbCategories});
+        this.navCtrl.push(CategoriesListPage, {categoryName: null, dbCategories: this.dbCategories});
     }
 
 
