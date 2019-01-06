@@ -45,7 +45,7 @@ export class NewItemPage {
         const item = new Item(this.itemName, this.description, itemType);
 
         if (this.categoryName) {
-            item.category = this.categoryName;
+            item.categoryName = this.categoryName;
         }
 
         if (item.type === ItemType.List) {

@@ -34,9 +34,9 @@
             | sort: [listOptions.showCategories ? 'categoryOrder' : '', {name: 'active', reverse: true}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}];
              let i = index">
 
-            <ion-item-divider *ngIf="listOptions.showCategories && isCategoryChanged(i, itm.category)" color="light">
+            <ion-item-divider *ngIf="listOptions.showCategories && isCategoryChanged(i, itm.categoryName)" color="light">
                 <!--<ion-icon name="cos" item-start></ion-icon>-->
-                {{itm.category}}
+                {{itm.categoryName}}
             </ion-item-divider>
 
             <ion-item-group reorder="{{listOptions.sortField === 'order'}}" (ionItemReorder)="reorderItems($event)">

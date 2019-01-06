@@ -51,8 +51,8 @@ export class HomePage implements OnInit {
         this.dbAllLists = this.afDatabase.list(fireAllListsPath);
         this.dbCurrentItemList = this.afDatabase.list(fireCurrentListItemsPath);
 
-        this.categories = this.dbCategories.valueChanges(); //.pipe(tap (cts => cts.map (ct => this.items.pipe(map(itms => itms.filter(itm => itm.category === ct.name))))));
-        this.items = this.dbCurrentItemList.valueChanges(); //.pipe(map( itms => itms.map(itm => {this.categories.pipe(map (cts => cts.find(c => c.name === itm.category)), map(c => {return c ? c.order : 999})).subscribe(o => {itm.categoryOrder = o}); return itm})));;
+        this.categories = this.dbCategories.valueChanges(); //.pipe(tap (cts => cts.map (ct => this.items.pipe(map(itms => itms.filter(itm => itm.categoryName === ct.name))))));
+        this.items = this.dbCurrentItemList.valueChanges(); //.pipe(map( itms => itms.map(itm => {this.categories.pipe(map (cts => cts.find(c => c.name === itm.categoryName)), map(c => {return c ? c.order : 999})).subscribe(o => {itm.categoryOrder = o}); return itm})));;
 
         this.categories.subscribe(value => {console.log(value)});
         this.items.subscribe(value => {console.log(value)});
@@ -104,7 +104,7 @@ export class HomePage implements OnInit {
 
 
     goToCategoriesPage() {
-        this.navCtrl.push(CategoriesListPage, {categoryName: null, dbCategories: this.dbCategories});
+        this.navCtrl.push(CategoriesListPage, {categoryName: null, items: this.items, dbCategories: this.dbCategories, dbCurrentItemList: this.dbCurrentItemList});
     }
 
 

@@ -19,6 +19,7 @@ import {FilterPipeModule} from "ngx-filter-pipe";
 import {CategoriesListPage} from "../pages/categories/list/categoriesList";
 import {ItemFilterPipe} from "../pipes/filter/itemFilter";
 import {CategoryFilterPipe} from "../pipes/filter/categoryFilter";
+import {CategoriesNewPage} from "../pages/categories/new/categoriesNew";
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -36,6 +37,7 @@ export const firebaseConfig = {
         HomePage,
         NewItemPage,
         CategoriesListPage,
+        CategoriesNewPage,
         OptionsComponent,
         FilterPipe,
         ItemFilterPipe,
@@ -56,6 +58,7 @@ export const firebaseConfig = {
         HomePage,
         NewItemPage,
         CategoriesListPage,
+        CategoriesNewPage,
         OptionsComponent
     ],
     providers: [

@@ -1,10 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
-import {Item, ItemType} from "../../../model/item";
-import {CategoriesListPage} from "../list/categoriesList";
-import {List} from "../../../model/list";
-import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
+import {AngularFireList} from 'angularfire2/database';
 import {Category} from "../../../model/category";
+import {Item} from "../../../model/item";
 
 
 @Component({
@@ -18,28 +16,22 @@ export class CategoriesNewPage {
 
     @ViewChild('nameInput') nameInput;
 
-    dbCurrentItemList: AngularFireList<any>;
     dbCategories: AngularFireList<any>;
-
+    maxOrderNo: number;
     clearSearchValueFn;
-
-    setCategoryNameFn = (categoryName) => {this.categoryName = categoryName};
 
 
     constructor(public navParams: NavParams, public viewCtrl: ViewController, public navCtrl: NavController) {
         this.categoryName = navParams.get('categoryName');
-        this.dbCurrentItemList = navParams.get('dbCurrentItemList');
         this.dbCategories = navParams.get('dbCategories');
-
+        this.maxOrderNo = navParams.get('maxOrderNo');
         this.clearSearchValueFn = navParams.get('clearSearchValueFn');
-        // this.list = navParams.get('list');
         console.log('categoryName: ' + this.categoryName);
     }
 
 
     addCategory() {
-
-        const category = new Category(this.categoryName, this.description);
+        const category = new Category(this.categoryName, this.description, this.maxOrderNo + 1);
 
         const categoryRef = this.dbCategories.push({});
         category.id = categoryRef.key;
@@ -48,7 +40,6 @@ export class CategoriesNewPage {
         this.clearSearchValueFn();
         this.navCtrl.pop();
     }
-
 
 
     ionViewDidLoad() {

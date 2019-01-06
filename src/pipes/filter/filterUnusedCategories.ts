@@ -10,7 +10,7 @@ export class FilterUnusedCategoriesPipe implements PipeTransform {
     transform(categories: Category[], items: Item[]): Category[] {
         if (!categories || !items) return [];
         return categories.filter(category => {
-            return items.find(item => item.category === category.name);
+            return items.find(item => item.categoryName === category.name);
         });
     }
 }
