@@ -104,10 +104,6 @@ export class CategoriesListPage implements OnInit {
     updateItems4Category(category: Category) {
         console.log("updateItems4Category: " + JSON.stringify(category));
         this.itemsArray.filter(itm => itm.categoryName === category.name).map(itm => this.updateItemOrderInDB(itm, category.order));
-        // this.items.pipe(map(itms => itms.filter(itm => itm.categoryName === categoryName.name).map(itm => {this.updateItemOrderInDB(itm, categoryName.order)})));
-        // const items2 = this.items.pipe(map((itms) => itms.filter((itm) => itm.categoryName === categoryName.name).map((itm) => {console.log('AAA: ' + itm.name)})));
-        // items2.subscribe(value => {console.log(value)});
-
     }
 
 
