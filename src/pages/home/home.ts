@@ -5,7 +5,6 @@ import {NewItemPage} from "../newItem/newItem";
 import {OptionsComponent} from "../../components/options/options";
 import {ListOptions} from "../../model/listOptions";
 import {Item, ItemType} from "../../model/item";
-import {List} from "../../model/list";
 import {Category} from "../../model/category";
 import {Observable} from "rxjs";
 import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
@@ -51,8 +50,8 @@ export class HomePage implements OnInit {
         this.dbAllLists = this.afDatabase.list(fireAllListsPath);
         this.dbCurrentItemList = this.afDatabase.list(fireCurrentListItemsPath);
 
-        this.categories = this.dbCategories.valueChanges(); //.pipe(tap (cts => cts.map (ct => this.items.pipe(map(itms => itms.filter(itm => itm.categoryName === ct.name))))));
-        this.items = this.dbCurrentItemList.valueChanges(); //.pipe(map( itms => itms.map(itm => {this.categories.pipe(map (cts => cts.find(c => c.name === itm.categoryName)), map(c => {return c ? c.order : 999})).subscribe(o => {itm.categoryOrder = o}); return itm})));;
+        this.categories = this.dbCategories.valueChanges();
+        this.items = this.dbCurrentItemList.valueChanges();
 
         this.categories.subscribe(value => {console.log(value)});
         this.items.subscribe(value => {console.log(value)});
@@ -87,7 +86,7 @@ export class HomePage implements OnInit {
     }
 
 
-    goToNewItemPage(item) {
+    goToNewItemPage() {
         //if (this.searchValue == null) this.searchValue = "";
         this.navCtrl.push(NewItemPage, {itemName: this.searchValue, dbAllLists: this.dbAllLists, dbCurrentItemList: this.dbCurrentItemList, dbCategories: this.dbCategories, clearSearchValueFn: this.clearSearchValueFn});
     }
@@ -98,7 +97,7 @@ export class HomePage implements OnInit {
     }
 
 
-    goToEditPage(item) {
+    goToEditPage() {
         //this.navCtrl.push(HomePage, item);
     }
 

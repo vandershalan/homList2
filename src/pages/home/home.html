@@ -19,8 +19,8 @@
 
 <ion-content padding-horizontal>
 
-    <ion-row align-items-center nowrap>
-        <ion-searchbar [(ngModel)]="searchValue" no-padding padding-vertical padding-right>
+    <ion-row align-items-center nowrap padding-top margin-bottom>
+        <ion-searchbar [(ngModel)]="searchValue" no-padding padding-right>
         </ion-searchbar>
         <button id="searchAddButton" ion-button icon-only (click)="goToNewItemPage()">
             <ion-icon name="add"></ion-icon>
@@ -34,7 +34,7 @@
             | sort: [listOptions.showCategories ? 'categoryOrder' : '', {name: 'active', reverse: true}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}];
              let i = index">
 
-            <ion-item-divider *ngIf="listOptions.showCategories && isCategoryChanged(i, itm.categoryName)" color="light">
+            <ion-item-divider *ngIf="listOptions.showCategories && (isCategoryChanged(i, itm.categoryName) && (i > 0 || 'Bez kategorii' != itm.categoryName))" color="light" margin-top text-uppercase>
                 <!--<ion-icon name="cos" item-start></ion-icon>-->
                 {{itm.categoryName}}
             </ion-item-divider>

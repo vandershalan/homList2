@@ -23,7 +23,7 @@
         <ion-item-sliding *ngFor="let ctgr of categories | async | categoryFilter: searchValue">
             <ion-item (click)="goToEditCategoryPage(ctgr)">
                 <ion-icon name="paper" item-start></ion-icon>
-                <ion-label>{{ctgr.name}}</ion-label>
+                <ion-label>{{ctgr.name + (ctgr.isDefault ? " (domyślna)" : "")}}</ion-label>
                 <ion-radio *ngIf="categoryName" checked="{{ctgr.name === categoryName}}" item-end value="{{ctgr.name}}" (ionSelect)="categoryChosen()"></ion-radio>
             </ion-item>
             <ion-item-options side="right">

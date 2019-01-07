@@ -3,7 +3,11 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {Item, ItemType} from "../../model/item";
 import {CategoriesListPage} from "../categories/list/categoriesList";
 import {List} from "../../model/list";
-import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
+import {AngularFireList} from 'angularfire2/database';
+import {Category} from "../../model/category";
+import {filter, find, map} from "rxjs/operators";
+import {SortPipe} from "../../pipes/sort/sort";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -12,31 +16,40 @@ import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 })
 export class NewItemPage {
 
+    DEFAULT_CATEGORY_NAME = 'Bez kategorii';
+
     itemName: string;
     description: string;
-    categoryName: string;
+    category: Category = new Category(this.DEFAULT_CATEGORY_NAME, '', 100);
 
     itemType: typeof ItemType = ItemType;
     @ViewChild('nameInput') nameInput;
 
     dbAllLists: AngularFireList<any>;
     dbCurrentItemList: AngularFireList<any>;
-    dbCategories: AngularFireList<any>;
+    dbCategories: AngularFireList<Category>;
+
+    private categoriesSubscription: Subscription;
 
     clearSearchValueFn;
 
-    setCategoryNameFn = (categoryName) => {this.categoryName = categoryName};
+    setCategoryFn = (category) => {this.category = category};
 
 
-    constructor(public navParams: NavParams, public viewCtrl: ViewController, public navCtrl: NavController) {
+    constructor(public navParams: NavParams, public navCtrl: NavController) {
         this.itemName = navParams.get('itemName');
         this.dbAllLists = navParams.get('dbAllLists');
         this.dbCurrentItemList = navParams.get('dbCurrentItemList');
         this.dbCategories = navParams.get('dbCategories');
 
         this.clearSearchValueFn = navParams.get('clearSearchValueFn');
-        // this.list = navParams.get('list');
+
         console.log('itemName: ' + this.itemName);
+    }
+
+
+    ngOnInit() {
+        this.categoriesSubscription = this.dbCategories.valueChanges().pipe(map(ctgrs => ctgrs.find(ctgr => (ctgr.isDefault)))).subscribe(ctgr => {ctgr ? this.category = ctgr : ''});
     }
 
 
@@ -44,8 +57,9 @@ export class NewItemPage {
 
         const item = new Item(this.itemName, this.description, itemType);
 
-        if (this.categoryName) {
-            item.categoryName = this.categoryName;
+        if (this.category) {
+            item.categoryName = this.category.name;
+            item.categoryOrder = this.category.order;
         }
 
         if (item.type === ItemType.List) {
@@ -64,7 +78,7 @@ export class NewItemPage {
 
 
     goToCategoriesPage() {
-        this.navCtrl.push(CategoriesListPage, {categoryName: this.categoryName, dbCategories: this.dbCategories, setCategoryNameFn: this.setCategoryNameFn});
+        this.navCtrl.push(CategoriesListPage, {categoryName: this.category.name, dbCategories: this.dbCategories, dbCurrentItemList: this.dbCurrentItemList, setCategoryNameFn: this.setCategoryFn});
     }
 
 

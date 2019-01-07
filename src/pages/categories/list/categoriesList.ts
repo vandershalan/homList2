@@ -3,7 +3,7 @@ import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {Category} from "../../../model/category";
 import {Observable, Subscription} from "rxjs";
-import {filter, map} from "rxjs/operators";
+import {map} from "rxjs/operators";
 import {SortPipe} from "../../../pipes/sort/sort";
 import {CategoriesNewPage} from "../new/categoriesNew";
 import {Item} from "../../../model/item";
@@ -19,7 +19,7 @@ export class CategoriesListPage implements OnInit {
     dbCategories: AngularFireList<any>;
     categories: Observable<Category[]>;
     categoryName: string;
-    setCategoryNameFn;
+    setCategoryFn;
     searchValue: string = '';
     categoriesArray: Category[] = [];
     itemsArray: Item[] = [];
@@ -30,12 +30,11 @@ export class CategoriesListPage implements OnInit {
     clearSearchValueFn = () => {this.searchValue = ''};
 
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public afDatabase: AngularFireDatabase) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
         this.categoryName = navParams.get('categoryName');
-        this.items = navParams.get('items');
         this.dbCurrentItemList = navParams.get('dbCurrentItemList');
         this.dbCategories = navParams.get('dbCategories');
-        this.setCategoryNameFn = navParams.get('setCategoryNameFn');
+        this.setCategoryFn = navParams.get('setCategoryFn');
     }
 
 
@@ -45,7 +44,7 @@ export class CategoriesListPage implements OnInit {
         this.categoriesSubscription = this.categories.subscribe(ctgrs => {this.categoriesArray = ctgrs as Category[]});
         this.categories.subscribe(value => {console.log(value)});
 
-        this.itemsSubscription = this.items.subscribe(itms => {this.itemsArray = itms as Item[]});
+        this.itemsSubscription = this.dbCurrentItemList.valueChanges().subscribe(itms => {this.itemsArray = itms as Item[]});
     }
 
 
@@ -68,7 +67,8 @@ export class CategoriesListPage implements OnInit {
 
 
     categoryChosen() {
-        this.setCategoryNameFn((this.categoryName));
+        //TODO - pokombinonwać jak zwracać order
+        this.setCategoryFn((this.categoryName));
         this.navCtrl.pop();
     }
 
