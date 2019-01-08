@@ -86,7 +86,7 @@ export class NewItemPage {
         console.log('ionViewDidLoad NewItemPage');
         setTimeout(() => {
             this.nameInput.setFocus();
-        }, 500);
+        }, 700);
     }
 
 }

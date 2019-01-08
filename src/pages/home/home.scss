@@ -4,22 +4,37 @@ page-home {
   //  margin-top: 15px;
   //}
 
-  .item-done {
-    color: #AAA
-  }
-
-  .ion-icon-add {
-    font-size: 1.4em;
-  }
-
-  .ion-icon-done {
-    font-size: 1.2em;
-  }
-
-  #searchAddButton {
+  .button-md#searchAddButton {
     height: 4.2rem;
     width: 4.7rem;
     margin: 0px;
   }
 
+  .item-done {
+    color: #AAA
+  }
+
+  .icon-md.ion-icon-done {
+    font-size: 1.2em;
+  }
+
+  //.icon-ios.ion-icon-done {
+  //  font-size: 2em;
+  //}
+
+  .icon-wp.ion-icon-done {
+    font-size: 2em;
+  }
+
+  .icon-md.ion-icon-add {
+    font-size: 1.4em;
+  }
+
+  //.icon-ios.ion-icon-add {
+  //  font-size: 1.8em;
+  //}
+
+  .icon-wp.ion-icon-add {
+    font-size: 1.8em;
+  }
 }
