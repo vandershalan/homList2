@@ -5,21 +5,10 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 
 import {MyApp} from './app.component';
-import {HomePage} from '../pages/home/home';
-import {NewItemPage} from '../pages/newItem/newItem';
-import {OptionsComponent} from "../components/options/options";
 // Import the AF2 Module
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
-// import {ListOptions} from "../model/listOptions";
-import {FilterPipe} from "../pipes/filter/filter";
-import {SortPipe} from "../pipes/sort/sort";
 import {OrderModule} from "ngx-order-pipe";
-import {FilterPipeModule} from "ngx-filter-pipe";
-import {CategoriesListPage} from "../pages/categories/list/categoriesList";
-import {ItemFilterPipe} from "../pipes/filter/itemFilter";
-import {CategoryFilterPipe} from "../pipes/filter/categoryFilter";
-import {CategoriesNewPage} from "../pages/categories/new/categoriesNew";
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -33,33 +22,20 @@ export const firebaseConfig = {
 
 @NgModule({
     declarations: [
-        MyApp,
-        HomePage,
-        NewItemPage,
-        CategoriesListPage,
-        CategoriesNewPage,
-        OptionsComponent,
-        FilterPipe,
-        ItemFilterPipe,
-        CategoryFilterPipe,
-        SortPipe
+        MyApp
     ],
     imports: [
         BrowserModule,
         IonicModule.forRoot(MyApp),
         AngularFireModule.initializeApp(firebaseConfig),
         AngularFireDatabaseModule,
-        OrderModule,
-        FilterPipeModule
+        OrderModule
     ],
-    bootstrap: [IonicApp],
+    bootstrap: [
+        IonicApp
+    ],
     entryComponents: [
-        MyApp,
-        HomePage,
-        NewItemPage,
-        CategoriesListPage,
-        CategoriesNewPage,
-        OptionsComponent
+        MyApp
     ],
     providers: [
         StatusBar,

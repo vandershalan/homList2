@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {NavParams, ViewController} from "ionic-angular";
-import {ListOptions} from "../../model/listOptions";
+import {ListOptions} from "../../../model/listOptions";
+
 
 @Component({
     selector: 'options',
