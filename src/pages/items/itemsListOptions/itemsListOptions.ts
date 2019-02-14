@@ -1,13 +1,14 @@
 import {Component} from '@angular/core';
-import {NavParams, ViewController} from "ionic-angular";
+import {IonicPage, NavParams, ViewController} from "ionic-angular";
 import {ListOptions} from "../../../model/listOptions";
 
 
+@IonicPage()
 @Component({
-    selector: 'options',
-    templateUrl: 'options.html'
+    selector: 'items-list-options',
+    templateUrl: 'itemsListOptions.html'
 })
-export class OptionsComponent {
+export class ItemsListOptionsComponent {
 
     listOptions: ListOptions;
     currentSortField: string;
