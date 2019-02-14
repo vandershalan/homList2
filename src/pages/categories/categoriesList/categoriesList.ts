@@ -33,8 +33,6 @@ export class CategoriesListPage implements OnInit {
         this.categoryName = navParams.get('categoryName');
         this.dbCurrentItemList = navParams.get('dbCurrentItemList');
         this.dbCategories = navParams.get('dbCategories');
-        //this.setCategoryFn = navParams.get('setCategoryFn');
-        //console.log('setCategoryFn', navParams.get('setCategoryFn'));
     }
 
 
@@ -59,28 +57,19 @@ export class CategoriesListPage implements OnInit {
     }
 
 
-    goToNewCategoryPage() {
-        const maxOrderNo = this.categoriesArray[this.categoriesArray.length - 1].order;
-        this.navCtrl.push('NewCategoryPage', {categoryName: this.searchValue, dbCategories: this.dbCategories, maxOrderNo: maxOrderNo, clearSearchValueFn: this.clearSearchValueFn});
-    }
-
-
-    goToEditPage(category) {
-        //this.navCtrl.push(HomePage, item);
-    }
-
-
     categoryChosen() {
-        //TODO - pokombinonwać jak zwracać order
-        //this.setCategoryFn((this.categoryName));
-        const chosenCategory = this.categoriesArray.find(cat => cat.name === this.categoryName);
+        const chosenCategory = this.getCategory4Name(this.categoryName);
         this.events.publish('selectedCategoryTopic', chosenCategory);
         this.navCtrl.pop();
     }
 
 
-    reorderCategories(indexes) {
+    getCategory4Name(categoryName: string): Category {
+        return this.categoriesArray.find(cat => cat.name === categoryName);
+    }
 
+
+    reorderCategories(indexes) {
         // console.log(indexes.from + " " + indexes.to);
 
         this.categoriesArray[indexes.from].order = indexes.to;
@@ -116,6 +105,17 @@ export class CategoriesListPage implements OnInit {
     updateItemOrderInDB(item: Item, newOrder: number) {
         console.log("updateItemOrderInDB: " + JSON.stringify(item), newOrder);
         this.dbCurrentItemList.update(item.id, {categoryOrder: newOrder});
+    }
+
+
+    goToNewCategoryPage() {
+        const maxOrderNo = this.categoriesArray[this.categoriesArray.length - 1].order;
+        this.navCtrl.push('NewCategoryPage', {categoryName: this.searchValue, dbCategories: this.dbCategories, maxOrderNo: maxOrderNo, clearSearchValueFn: this.clearSearchValueFn});
+    }
+
+
+    goToEditCategoryPage(category: Category) {
+        this.navCtrl.push('EditCategoryPage', {category: category, dbCategories: this.dbCategories});
     }
 
 

@@ -46,7 +46,7 @@
                             <ion-icon name="list" item-start></ion-icon>
                             {{itm.name}}
                         </ion-item>
-                        <ion-item *ngIf="itm.type != 'list'" (click)="goToEditPage(itm)">
+                        <ion-item *ngIf="itm.type != 'list'">
                             <ion-icon name="pricetag" item-start></ion-icon>
                             {{itm.name}}
                             <button ion-button default color="light" (click)="markAsDone(itm)" item-end>
@@ -57,7 +57,8 @@
                             <button ion-button (click)="markAsDone(itm)">Done</button>
                         </ion-item-options>
                         <ion-item-options side="right">
-                            <button ion-button (click)="removeItem(itm)">Usuń</button>
+                            <button ion-button color="danger" (click)="removeItem(itm)">Remove</button>
+                            <button ion-button (click)="goToEditPage(itm)">Edit</button>
                         </ion-item-options>
                     </ion-item-sliding>
                 </ng-container>
