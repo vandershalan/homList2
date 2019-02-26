@@ -15,11 +15,9 @@ import {Subscription} from "rxjs";
 })
 export class NewItemPage {
 
-    DEFAULT_CATEGORY_NAME = 'Bez kategorii';
-
     itemName: string;
     description: string;
-    category: Category = new Category(this.DEFAULT_CATEGORY_NAME, '', 100);
+    category: Category = Category.WITHOUT_CATEGORY;
 
     itemType: typeof ItemType = ItemType;
     @ViewChild('nameInput') nameInput;
@@ -71,8 +69,7 @@ export class NewItemPage {
         const item = new Item(this.itemName, this.description, itemType);
 
         if (this.category) {
-            item.categoryName = this.category.name;
-            item.categoryOrder = this.category.order;
+            item.categoryId = this.category.id;
         }
 
         if (item.type === ItemType.List) {
@@ -91,7 +88,7 @@ export class NewItemPage {
 
 
     goToCategoriesPage() {
-        this.navCtrl.push('CategoriesListPage', {categoryName: this.category.name, dbCategories: this.dbCategories, dbCurrentItemList: this.dbCurrentItemList});
+        this.navCtrl.push('CategoriesListPage', {categoryId: this.category.id, dbCategories: this.dbCategories, dbCurrentItemList: this.dbCurrentItemList});
     }
 
 

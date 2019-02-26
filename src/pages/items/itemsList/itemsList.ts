@@ -1,11 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, PopoverController, Events} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {ListOptions} from "../../../model/listOptions";
 import {Item, ItemType} from "../../../model/item";
 import {Category} from "../../../model/category";
-import {Observable} from "rxjs";
+import {Subscription} from "rxjs";
 import {DiacriticsRemoval} from "../../../utils/DiacriticsRemoval";
+import {ItemWithCategory} from "../../../model/itemWithCategory";
 
 @IonicPage()
 @Component({
@@ -17,9 +18,14 @@ export class ItemsListPage implements OnInit {
     dbAllLists: AngularFireList<any>;
     dbCurrentItemList: AngularFireList<any>;
     dbCategories: AngularFireList<any>;
-    items: Observable<Item[]>;
-    categories: Observable<Category[]>;
+    items: Item[] = [];
+    itemsWithCategory: ItemWithCategory[] = [];
+    categories: Category[] = [];
     item: Item;
+    CATEGORY_WITHOUT_CATEGORY_NAME = Category.WITHOUT_CATEGORY_NAME;
+
+    private categoriesSubscription: Subscription;
+    private itemsSubscription: Subscription;
 
     rd = (val) => typeof val === 'string' ? DiacriticsRemoval.removeDiacritics(val.toLowerCase()) : val;
 
@@ -45,25 +51,21 @@ export class ItemsListPage implements OnInit {
         this.dbAllLists = this.afDatabase.list(fireAllListsPath);
         this.dbCurrentItemList = this.afDatabase.list(fireCurrentListItemsPath);
 
-        this.categories = this.dbCategories.valueChanges();
-        this.items = this.dbCurrentItemList.valueChanges();
-
-        this.categories.subscribe(value => {
-            console.log(value)
-        });
-        this.items.subscribe(value => {
-            console.log(value)
-        });
-
-
-        //this.items.pipe(tap(itms => itms.map(itm => console.log(JSON.stringify(itm)))));
-
         console.log("firePath: " + fireCurrentListPath);
     }
 
 
+    // ngDoCheck() {
+    //     console.log('itemList ngDoCheck');
+    // }
+
+
     ionViewWillEnter() {
         console.log('itemList ionViewWillEnter');
+
+        this.categoriesSubscription = this.dbCategories.valueChanges().subscribe(ctgrs => {this.categories = ctgrs as Category[]; this.appendCategories2Items()});
+        this.itemsSubscription = this.dbCurrentItemList.valueChanges().subscribe(itms => {this.items = itms as Item[]; this.appendCategories2Items()});
+
         this.events.subscribe('itemsAddedTopic', event => {
             this.clearSearchValue();
         });
@@ -73,9 +75,23 @@ export class ItemsListPage implements OnInit {
 
     ionViewWillLeave(): void {
         console.log('itemList ionViewWillLeave');
+
+        this.categoriesSubscription.unsubscribe();
+        this.itemsSubscription.unsubscribe();
+
         this.events.unsubscribe('itemsAddedTopic', () => {
             console.log('Unsubscribed itemsAddedTopic');
         });
+    }
+
+
+    appendCategories2Items() {
+        console.log('itemList appendCategories2Items');
+        console.log("items: ", this.items);
+        console.log("categories: ", this.categories);
+        this.itemsWithCategory = this.items.map(itm => {const itmWC = new ItemWithCategory(); itmWC.item = itm; return itmWC});
+        this.itemsWithCategory.map(itmWC => {const category = this.categories.find(ctgr => ctgr.id === itmWC.item.categoryId); itmWC.category = category ? category : Category.WITHOUT_CATEGORY; return itmWC});
+        console.log("items with categories: ", this.itemsWithCategory);
     }
 
 
@@ -124,7 +140,7 @@ export class ItemsListPage implements OnInit {
 
 
     goToCategoriesPage() {
-        this.navCtrl.push('CategoriesListPage', {categoryName: null, items: this.items, dbCategories: this.dbCategories, dbCurrentItemList: this.dbCurrentItemList});
+        this.navCtrl.push('CategoriesListPage', {categoryId: null, items: this.items, dbCategories: this.dbCategories, dbCurrentItemList: this.dbCurrentItemList});
     }
 
 
@@ -143,6 +159,7 @@ export class ItemsListPage implements OnInit {
         this.clearSearchValue();
         this.updateItemInDB(item);
     }
+
 
     markAsActive(item: Item) {
         item.active = true;

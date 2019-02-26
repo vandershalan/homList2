@@ -29,51 +29,51 @@
 
     <ion-list>
 
-        <ng-container *ngFor="let itm of items | async
+        <ng-container *ngFor="let itmWC of itemsWithCategory
             | itemFilter: searchValue : listOptions.showActive : listOptions.showDone : listOptions.searchInActive : listOptions.searchInDone
-            | sort: [listOptions.showCategories ? 'categoryOrder' : '', {name: 'active', reverse: true}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}];
+            | sort: [listOptions.showCategories ? 'category.order' : '', {name: 'item.active', reverse: true}, {name: this.listOptions.sortField, primer: this.rd, reverse: this.listOptions.sortDesc}];
              let i = index">
 
-            <ion-item-divider *ngIf="listOptions.showCategories && (isCategoryChanged(i, itm.categoryName) && (i > 0 || 'Bez kategorii' != itm.categoryName))" color="light" margin-top text-uppercase>
+            <ion-item-divider *ngIf="listOptions.showCategories && (isCategoryChanged(i, itmWC.category?.name) && (i > 0 || CATEGORY_WITHOUT_CATEGORY_NAME != itmWC.category?.name))" color="light" margin-top text-uppercase>
                 <!--<ion-icon name="cos" item-start></ion-icon>-->
-                {{itm.categoryName}}
+                {{itmWC.category?.name}}
             </ion-item-divider>
 
-                <ng-container *ngIf="itm.active && (listOptions.showActive || (listOptions.searchInActive && searchValue))">
+                <ng-container *ngIf="itmWC.item.active && (listOptions.showActive || (listOptions.searchInActive && searchValue))">
                     <!--<ion-item-sliding (ionDrag)="doActionIfSwipeIsEnough($event, itm)">-->
                     <ion-item-sliding>
-                        <ion-item *ngIf="itm.type == 'list'" (click)="goToListPage(itm)">
+                        <ion-item *ngIf="itmWC.item.type == 'list'" (click)="goToListPage(itmWC.item)">
                             <ion-icon name="list" item-start></ion-icon>
-                            {{itm.name}}
+                            {{itmWC.item.name}}
                         </ion-item>
-                        <ion-item *ngIf="itm.type != 'list'">
+                        <ion-item *ngIf="itmWC.item.type != 'list'">
                             <ion-icon name="pricetag" item-start></ion-icon>
-                            {{itm.name}}
-                            <button ion-button default color="light" (click)="markAsDone(itm)" item-end>
+                            {{itmWC.item.name}}
+                            <button ion-button default color="light" (click)="markAsDone(itmWC.item)" item-end>
                                 <ion-icon class="ion-icon-done" name="checkmark"></ion-icon>
                             </button>
                         </ion-item>
-                        <ion-item-options *ngIf="itm.type != 'list'" side="left" (ionSwipe)="markAsDone(itm)">
-                            <button ion-button (click)="markAsDone(itm)">Done</button>
+                        <ion-item-options *ngIf="itmWC.item.type != 'list'" side="left" (ionSwipe)="markAsDone(itmWC.item)">
+                            <button ion-button (click)="markAsDone(itmWC.item)">Done</button>
                         </ion-item-options>
                         <ion-item-options side="right">
-                            <button ion-button color="danger" (click)="removeItem(itm)">Remove</button>
-                            <button ion-button (click)="goToEditPage(itm)">Edit</button>
+                            <button ion-button color="danger" (click)="removeItem(itmWC.item)">Remove</button>
+                            <button ion-button (click)="goToEditPage(itmWC.item)">Edit</button>
                         </ion-item-options>
                     </ion-item-sliding>
                 </ng-container>
 
-            <ion-item-sliding *ngIf="!itm.active && (listOptions.showDone || (listOptions.searchInDone && searchValue))">
-                <ion-item class="item-done" (click)="goToListPage(itm)">
-                    <ion-icon *ngIf="itm.type == 'list'" name="list" item-start></ion-icon>
-                    <ion-icon *ngIf="itm.type != 'list'" name="pricetag" item-start></ion-icon>
-                    {{itm.name}}
-                    <button ion-button default color="light" (click)="markAsActive(itm)" item-end>
+            <ion-item-sliding *ngIf="!itmWC.item.active && (listOptions.showDone || (listOptions.searchInDone && searchValue))">
+                <ion-item class="item-done" (click)="goToListPage(itmWC.item)">
+                    <ion-icon *ngIf="itmWC.item.type == 'list'" name="list" item-start></ion-icon>
+                    <ion-icon *ngIf="itmWC.item.type != 'list'" name="pricetag" item-start></ion-icon>
+                    {{itmWC.item.name}}
+                    <button ion-button default color="light" (click)="markAsActive(itmWC.item)" item-end>
                         <ion-icon class="ion-icon-add" name="add"></ion-icon>
                     </button>
                 </ion-item>
                 <ion-item-options side="right">
-                    <button ion-button (click)="removeItem(itm)">Usuń</button>
+                    <button ion-button (click)="removeItem(itmWC.item)">Usuń</button>
                 </ion-item-options>
             </ion-item-sliding>
 

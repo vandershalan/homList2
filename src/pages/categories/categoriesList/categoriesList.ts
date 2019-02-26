@@ -18,7 +18,7 @@ export class CategoriesListPage implements OnInit {
     dbCurrentItemList: AngularFireList<any>;
     dbCategories: AngularFireList<any>;
     categories: Observable<Category[]>;
-    categoryName: string;
+    categoryId: string;
     searchValue: string = '';
     categoriesArray: Category[] = [];
     itemsArray: Item[] = [];
@@ -30,7 +30,7 @@ export class CategoriesListPage implements OnInit {
 
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public events: Events) {
-        this.categoryName = navParams.get('categoryName');
+        this.categoryId = navParams.get('categoryId');
         this.dbCurrentItemList = navParams.get('dbCurrentItemList');
         this.dbCategories = navParams.get('dbCategories');
     }
@@ -58,14 +58,14 @@ export class CategoriesListPage implements OnInit {
 
 
     categoryChosen() {
-        const chosenCategory = this.getCategory4Name(this.categoryName);
+        const chosenCategory = this.getCategory4Id(this.categoryId);
         this.events.publish('selectedCategoryTopic', chosenCategory);
         this.navCtrl.pop();
     }
 
 
-    getCategory4Name(categoryName: string): Category {
-        return this.categoriesArray.find(cat => cat.name === categoryName);
+    getCategory4Id(categoryId: string): Category {
+        return this.categoriesArray.find(cat => cat.id === categoryId);
     }
 
 
@@ -92,20 +92,20 @@ export class CategoriesListPage implements OnInit {
     updateCategoryAndItemsInDB(category: Category) {
         console.log("updateCategoryAndItemsInDB: " + JSON.stringify(category));
         this.dbCategories.update(category.id, category);
-        this.updateItems4Category(category);
+        // this.updateItems4Category(category);
     }
 
 
-    updateItems4Category(category: Category) {
-        console.log("updateItems4Category: " + JSON.stringify(category));
-        this.itemsArray.filter(itm => itm.categoryName === category.name).map(itm => this.updateItemOrderInDB(itm, category.order));
-    }
+    // updateItems4Category(category: Category) {
+    //     console.log("updateItems4Category: " + JSON.stringify(category));
+    //     this.itemsArray.filter(itm => itm.categoryName === category.name).map(itm => this.updateItemOrderInDB(itm, category.order));
+    // }
 
 
-    updateItemOrderInDB(item: Item, newOrder: number) {
-        console.log("updateItemOrderInDB: " + JSON.stringify(item), newOrder);
-        this.dbCurrentItemList.update(item.id, {categoryOrder: newOrder});
-    }
+    // updateItemOrderInDB(item: Item, newOrder: number) {
+    //     console.log("updateItemOrderInDB: " + JSON.stringify(item), newOrder);
+    //     this.dbCurrentItemList.update(item.id, {categoryOrder: newOrder});
+    // }
 
 
     goToNewCategoryPage() {
@@ -120,7 +120,7 @@ export class CategoriesListPage implements OnInit {
 
 
     removeCategory(category: Category) {
-        if (this.itemsArray.some(itm => itm.categoryName === category.name)) {
+        if (this.itemsArray.some(itm => itm.categoryId === category.id)) {
             let alert = this.alertCtrl.create({
                 title: 'Category in use',
                 message: 'There are items (active or done) belong to this category.<p>Removing such category is forbidden.',
