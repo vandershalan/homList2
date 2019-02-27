@@ -19,7 +19,7 @@
         </button>
     </ion-row>
 
-    <ion-list radio-group reorder [(ngModel)]="categoryName" (ionItemReorder)="reorderCategories($event)">
+    <ion-list sliding="true" radio-group reorder [(ngModel)]="categoryName" (ionItemReorder)="reorderCategories($event)">
         <ion-item-sliding *ngFor="let ctgr of categories | async | categoryFilter: searchValue">
             <ion-item>
                 <ion-icon name="paper" item-start></ion-icon>

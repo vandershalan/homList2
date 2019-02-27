@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams, Events} from 'ionic-angular';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {AlertController, IonicPage, NavController, NavParams, Events, List} from 'ionic-angular';
 import {AngularFireList} from 'angularfire2/database';
 import {Category} from "../../../model/category";
 import {Observable, Subscription} from "rxjs";
@@ -13,6 +13,8 @@ import {Item} from "../../../model/item";
     templateUrl: 'categoriesList.html'
 })
 export class CategoriesListPage implements OnInit {
+
+    @ViewChild(List) ionList: List;
 
     items: Observable<Item[]>;
     dbCurrentItemList: AngularFireList<any>;
@@ -45,6 +47,7 @@ export class CategoriesListPage implements OnInit {
 
     ionViewWillEnter() {
         console.log('ionViewWillEnter');
+        this.ionList.closeSlidingItems();
         this.itemsSubscription = this.dbCurrentItemList.valueChanges().subscribe(itms => {this.itemsArray = itms as Item[]});
         this.categoriesSubscription = this.categories.subscribe(ctgrs => {this.categoriesArray = ctgrs as Category[]});
     }
