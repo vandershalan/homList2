@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, Events, List} from 'ionic-angular';
 import {AngularFireList} from 'angularfire2/database';
 import {Category} from "../../../model/category";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {map} from "rxjs/operators";
 import {SortPipe} from "../../../pipes/sort/sort";
 import {Item} from "../../../model/item";

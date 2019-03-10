@@ -35,20 +35,16 @@ export class NewItemPage {
         this.dbAllLists = navParams.get('dbAllLists');
         this.dbCurrentItemList = navParams.get('dbCurrentItemList');
         this.dbCategories = navParams.get('dbCategories');
-
-        //this.clearSearchValueFn = navParams.get('clearSearchValueFn');
-
-        console.log('itemName: ' + this.itemName);
     }
 
 
     ngOnInit() {
-        this.categoriesSubscription = this.dbCategories.valueChanges().pipe(map(ctgrs => ctgrs.find(ctgr => (ctgr.isDefault)))).subscribe(ctgr => {ctgr ? this.category = ctgr : ''});
     }
 
 
     ionViewWillEnter() {
         console.log('newItem ionViewWillEnter');
+        this.categoriesSubscription = this.dbCategories.valueChanges().pipe(map(ctgrs => ctgrs.find(ctgr => (ctgr.isDefault)))).subscribe(ctgr => {ctgr ? this.category = ctgr : ''});
         this.events.subscribe('selectedCategoryTopic', category => {
             this.category = category;
         });
@@ -57,6 +53,7 @@ export class NewItemPage {
 
     ionViewWillLeave(): void {
         console.log('newItem ionViewWillLeave');
+        this.categoriesSubscription.unsubscribe();
         this.events.unsubscribe('selectedCategoryTopic', () => {
             console.log('Unsubscribed selectedCategoryTopic');
         });
