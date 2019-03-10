@@ -39,6 +39,14 @@ export class SortFnFactory {
             return cmp;
         };
 
+
+        let resolveFunc = function resolve(path, obj) {
+            return path.split('.').reduce(function(prev, curr) {
+                return prev ? prev[curr] : null
+            }, obj || self);
+        };
+
+
         // preprocess sorting options
         for (let i = 0; i < n_fields; i++) {
             field = args[i];
@@ -64,7 +72,8 @@ export class SortFnFactory {
                 field = fields[i];
                 name = field.name;
 
-                result = field.cmp(a[name], b[name]);
+                result = field.cmp(resolveFunc(name, a), resolveFunc(name, b));
+
                 if (result !== 0) break;
             }
             return result;

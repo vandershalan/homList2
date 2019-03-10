@@ -4,6 +4,6 @@ export class ListOptions {
     showDone: boolean = false;
     searchInActive: boolean = true;
     searchInDone: boolean = true;
-    sortField: string = 'name';
+    sortField: string = 'item.name';
     sortDesc: boolean = false;
 }

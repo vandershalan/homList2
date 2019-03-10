@@ -26,7 +26,6 @@ export class EditCategoryPage {
 
     updateCategory() {
         this.dbCategories.update(this.category.id, this.category);
-        //TODO - zapewnić update nazwy kategorii na wszystkih itemach
         this.navCtrl.pop();
     }
 

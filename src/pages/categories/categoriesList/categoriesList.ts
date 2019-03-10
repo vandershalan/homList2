@@ -16,13 +16,12 @@ export class CategoriesListPage implements OnInit {
 
     @ViewChild(List) ionList: List;
 
-    items: Observable<Item[]>;
+    showRadio: boolean;
+    selectedCategoryId: string;
     dbCurrentItemList: AngularFireList<any>;
     dbCategories: AngularFireList<any>;
-    categories: Observable<Category[]>;
-    categoryId: string;
     searchValue: string = '';
-    categoriesArray: Category[] = [];
+    categories: Category[] = [];
     itemsArray: Item[] = [];
 
     private categoriesSubscription: Subscription;
@@ -32,16 +31,17 @@ export class CategoriesListPage implements OnInit {
 
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public events: Events) {
-        this.categoryId = navParams.get('categoryId');
+        this.showRadio = navParams.get('showRadio');
+        this.selectedCategoryId = navParams.get('categoryId');
         this.dbCurrentItemList = navParams.get('dbCurrentItemList');
         this.dbCategories = navParams.get('dbCategories');
+        console.log("CategoriesListPage:constructor:selectedCategoryId: ", this.selectedCategoryId);
     }
 
 
     ngOnInit() {
         console.log('ngOnInit');
-        this.categories = this.dbCategories.valueChanges().pipe(map(ctgrs => new SortPipe().transform(ctgrs, ['order'])));
-        this.categories.subscribe(value => {console.log(value)});
+        //this.categories.subscribe(value => {console.log(value)});
     }
 
 
@@ -49,7 +49,8 @@ export class CategoriesListPage implements OnInit {
         console.log('ionViewWillEnter');
         this.ionList.closeSlidingItems();
         this.itemsSubscription = this.dbCurrentItemList.valueChanges().subscribe(itms => {this.itemsArray = itms as Item[]});
-        this.categoriesSubscription = this.categories.subscribe(ctgrs => {this.categoriesArray = ctgrs as Category[]});
+        const categoriesObservable = this.dbCategories.valueChanges().pipe(map(ctgrs => new SortPipe().transform(ctgrs, ['order'])));
+        this.categoriesSubscription = categoriesObservable.subscribe(ctgrs => {this.categories = ctgrs as Category[]});
     }
 
 
@@ -61,32 +62,33 @@ export class CategoriesListPage implements OnInit {
 
 
     categoryChosen() {
-        const chosenCategory = this.getCategory4Id(this.categoryId);
+        const chosenCategory = this.getCategory4Id(this.selectedCategoryId);
+        console.log('categoryChosen: ', chosenCategory);
         this.events.publish('selectedCategoryTopic', chosenCategory);
         this.navCtrl.pop();
     }
 
 
     getCategory4Id(categoryId: string): Category {
-        return this.categoriesArray.find(cat => cat.id === categoryId);
+        return this.categories.find(cat => cat.id === categoryId);
     }
 
 
     reorderCategories(indexes) {
         // console.log(indexes.from + " " + indexes.to);
 
-        this.categoriesArray[indexes.from].order = indexes.to;
-        this.updateCategoryAndItemsInDB(this.categoriesArray[indexes.from]);
+        this.categories[indexes.from].order = indexes.to;
+        this.updateCategoryAndItemsInDB(this.categories[indexes.from]);
 
         if (indexes.from < indexes.to) {
             for (let i = indexes.from; i < indexes.to; i ++) {
-                this.categoriesArray[i + 1].order = i;
-                this.updateCategoryAndItemsInDB(this.categoriesArray[i + 1]);
+                this.categories[i + 1].order = i;
+                this.updateCategoryAndItemsInDB(this.categories[i + 1]);
             }
         } else {
             for (let i = indexes.to; i < indexes.from; i ++) {
-                this.categoriesArray[i].order = i + 1;
-                this.updateCategoryAndItemsInDB(this.categoriesArray[i]);
+                this.categories[i].order = i + 1;
+                this.updateCategoryAndItemsInDB(this.categories[i]);
             }
         }
     }
@@ -112,7 +114,7 @@ export class CategoriesListPage implements OnInit {
 
 
     goToNewCategoryPage() {
-        const maxOrderNo = this.categoriesArray[this.categoriesArray.length - 1].order;
+        const maxOrderNo = this.categories[this.categories.length - 1].order;
         this.navCtrl.push('NewCategoryPage', {categoryName: this.searchValue, dbCategories: this.dbCategories, maxOrderNo: maxOrderNo, clearSearchValueFn: this.clearSearchValueFn});
     }
 

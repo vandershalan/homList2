@@ -8,6 +8,7 @@ import {MyApp} from './app.component';
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
 import {OrderModule} from "ngx-order-pipe";
+import { ListService } from '../providers/listService';
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -39,6 +40,7 @@ export const firebaseConfig = {
     providers: [
         StatusBar,
         SplashScreen,
+        ListService,
         {provide: ErrorHandler, useClass: IonicErrorHandler}
     ]
 })

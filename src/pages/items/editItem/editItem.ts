@@ -6,21 +6,19 @@ import {AngularFireList} from 'angularfire2/database';
 import {Category} from "../../../model/category";
 import {map} from "rxjs/operators";
 import {Subscription} from "rxjs";
+import {ItemWithCategory} from "../../../model/itemWithCategory";
 
 
 @IonicPage()
 @Component({
-    selector: 'new-item',
-    templateUrl: 'newItem.html',
+    selector: 'edit-item',
+    templateUrl: 'editItem.html',
 })
-export class NewItemPage {
+export class EditItemPage {
 
-    itemName: string;
-    description: string;
-    category: Category = Category.WITHOUT_CATEGORY;
+    itemWC: ItemWithCategory;
 
     itemType: typeof ItemType = ItemType;
-
     @ViewChild('nameInput') nameInput;
 
     dbAllLists: AngularFireList<any>;
@@ -31,69 +29,56 @@ export class NewItemPage {
 
 
     constructor(public navParams: NavParams, public navCtrl: NavController, public events: Events) {
-        this.itemName = navParams.get('itemName');
+        this.itemWC = navParams.get('itemWithCategory');
         this.dbAllLists = navParams.get('dbAllLists');
         this.dbCurrentItemList = navParams.get('dbCurrentItemList');
         this.dbCategories = navParams.get('dbCategories');
 
         //this.clearSearchValueFn = navParams.get('clearSearchValueFn');
 
-        console.log('itemName: ' + this.itemName);
+        console.log('itemName: ' + this.itemWC.item.name);
     }
 
 
     ngOnInit() {
-        this.categoriesSubscription = this.dbCategories.valueChanges().pipe(map(ctgrs => ctgrs.find(ctgr => (ctgr.isDefault)))).subscribe(ctgr => {ctgr ? this.category = ctgr : ''});
+        //this.categoriesSubscription = this.dbCategories.valueChanges().pipe(map(ctgrs => ctgrs.find(ctgr => (ctgr.isDefault)))).subscribe(ctgr => {ctgr ? this.itemWC = ctgr : ''});
     }
 
 
     ionViewWillEnter() {
-        console.log('newItem ionViewWillEnter');
+        console.log('editItem ionViewWillEnter');
         this.events.subscribe('selectedCategoryTopic', category => {
-            this.category = category;
+            console.log(category.name, category);
+            this.itemWC.item.categoryId = category.id;
+            this.itemWC.category = category;
         });
+
     }
 
 
     ionViewWillLeave(): void {
-        console.log('newItem ionViewWillLeave');
+        console.log('editItem ionViewWillLeave');
         this.events.unsubscribe('selectedCategoryTopic', () => {
             console.log('Unsubscribed selectedCategoryTopic');
         });
     }
 
 
-    addItem(itemType: ItemType) {
+    updateItem() {
+        this.dbCurrentItemList.update(this.itemWC.item.id, this.itemWC.item);
 
-        const item = new Item(this.itemName, this.description, itemType);
-
-        if (this.category) {
-            item.categoryId = this.category.id;
-        }
-
-        if (item.type === ItemType.List) {
-            //TODO: Dodać tworzenie elementu kategorii i wpisu 'Without category' jako domyślnej kategorii podczas tworzenia listy
-            const listRef = this.dbAllLists.push({});
-            listRef.set(new List(listRef.key, item.name));
-            item.listRef = listRef.key;
-        }
-
-        const itemRef = this.dbCurrentItemList.push({});
-        item.id = itemRef.key;
-        itemRef.set(item);
-
-        this.events.publish('itemsAddedTopic');
+        // this.events.publish('itemsAddedTopic');
         this.navCtrl.pop();
     }
 
 
     goToCategoriesPage() {
-        this.navCtrl.push('CategoriesListPage', {showRadio: true, categoryId: this.category.id, dbCategories: this.dbCategories, dbCurrentItemList: this.dbCurrentItemList});
+        this.navCtrl.push('CategoriesListPage', {showRadio: true, categoryId: this.itemWC.item.categoryId, dbCategories: this.dbCategories, dbCurrentItemList: this.dbCurrentItemList});
     }
 
 
     ionViewDidLoad() {
-        console.log('ionViewDidLoad NewItemPage');
+        console.log('ionViewDidLoad EditItemPage');
         setTimeout(() => {
             this.nameInput.setFocus();
         }, 700);

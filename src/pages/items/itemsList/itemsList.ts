@@ -123,24 +123,24 @@ export class ItemsListPage implements OnInit {
     }
 
 
+    goToItemsListPage(item) {
+        this.navCtrl.push('ItemsListPage', item);
+    }
+
+
     goToNewItemPage() {
         //if (this.searchValue == null) this.searchValue = "";
         this.navCtrl.push('NewItemPage', {itemName: this.searchValue, dbAllLists: this.dbAllLists, dbCurrentItemList: this.dbCurrentItemList, dbCategories: this.dbCategories});
     }
 
 
-    goToListPage(item) {
-        this.navCtrl.push('ItemsListPage', item);
-    }
-
-
-    goToEditPage() {
-        //this.navCtrl.push(ItemsListPage, item);
+    goToEditItemPage(itemWC: ItemWithCategory) {
+        this.navCtrl.push('EditItemPage', {itemWithCategory: itemWC, dbAllLists: this.dbAllLists, dbCurrentItemList: this.dbCurrentItemList, dbCategories: this.dbCategories});
     }
 
 
     goToCategoriesPage() {
-        this.navCtrl.push('CategoriesListPage', {categoryId: null, items: this.items, dbCategories: this.dbCategories, dbCurrentItemList: this.dbCurrentItemList});
+        this.navCtrl.push('CategoriesListPage', {showRadio: false, categoryId: null, dbCategories: this.dbCategories, dbCurrentItemList: this.dbCurrentItemList});
     }
 
 
@@ -171,14 +171,6 @@ export class ItemsListPage implements OnInit {
     updateItemInDB(item: Item) {
         //console.log("update item: " + JSON.stringify(item));
         this.dbCurrentItemList.update(item.id, item);
-    }
-
-
-
-    reorderItems(indexes) {
-        console.log (indexes.from + " " + indexes.to);
-        let element = this.items[indexes.from];
-        console.log (element);
     }
 
 

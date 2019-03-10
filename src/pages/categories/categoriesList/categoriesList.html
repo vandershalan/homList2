@@ -19,12 +19,12 @@
         </button>
     </ion-row>
 
-    <ion-list sliding="true" radio-group reorder [(ngModel)]="categoryName" (ionItemReorder)="reorderCategories($event)">
-        <ion-item-sliding *ngFor="let ctgr of categories | async | categoryFilter: searchValue">
+    <ion-list sliding="true" radio-group reorder [(ngModel)]="selectedCategoryId" (ionItemReorder)="reorderCategories($event)">
+        <ion-item-sliding *ngFor="let ctgr of categories | categoryFilter: searchValue; let i = index">
             <ion-item>
                 <ion-icon name="paper" item-start></ion-icon>
-                <ion-label>{{ctgr.name + (ctgr.isDefault ? " (domyślna)" : "")}}</ion-label>
-                <ion-radio *ngIf="categoryName" checked="{{ctgr.name === categoryName}}" item-end value="{{ctgr.name}}" (ionSelect)="categoryChosen()"></ion-radio>
+                <ion-label>{{ctgr.name + (ctgr.isDefault ? " (default)" : "")}}</ion-label>
+                <ion-radio *ngIf="showRadio" value="{{ctgr.id}}" (ionSelect)="categoryChosen()" item-end></ion-radio>
             </ion-item>
             <ion-item-options side="right">
                 <button ion-button color="danger" (click)="removeCategory(ctgr)">Remove</button>
