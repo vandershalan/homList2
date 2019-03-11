@@ -2,10 +2,11 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Events} from 'ionic-angular';
 import {Item, ItemType} from "../../../model/item";
 import {List} from "../../../model/list";
-import {AngularFireList} from 'angularfire2/database';
+import {AngularFireList, AngularFireDatabase} from 'angularfire2/database';
 import {Category} from "../../../model/category";
 import {map} from "rxjs/operators";
 import {Subscription} from "rxjs";
+import {ItemsListPage} from "../itemsList/itemsList";
 
 
 @IonicPage()
@@ -17,7 +18,7 @@ export class NewItemPage {
 
     itemName: string;
     description: string;
-    category: Category = Category.WITHOUT_CATEGORY;
+    category: Category = Category.CATEGORY_WITHOUT_CATEGORY;
 
     itemType: typeof ItemType = ItemType;
 
@@ -30,7 +31,7 @@ export class NewItemPage {
     private categoriesSubscription: Subscription;
 
 
-    constructor(public navParams: NavParams, public navCtrl: NavController, public events: Events) {
+    constructor(public navParams: NavParams, public navCtrl: NavController, public events: Events, public afDatabase: AngularFireDatabase) {
         this.itemName = navParams.get('itemName');
         this.dbAllLists = navParams.get('dbAllLists');
         this.dbCurrentItemList = navParams.get('dbCurrentItemList');
@@ -69,12 +70,23 @@ export class NewItemPage {
         }
 
         if (item.type === ItemType.List) {
-            //TODO: Dodać tworzenie elementu kategorii i wpisu 'Without category' jako domyślnej kategorii podczas tworzenia listy
-            const listRef = this.dbAllLists.push({});
-            listRef.set(new List(listRef.key, item.name));
-            item.listRef = listRef.key;
+            //creating new list in db
+            const newListRef = this.dbAllLists.push({});
+            const newList = new List(newListRef.key, item.name);
+            newListRef.set(newList);
+
+            item.listRef = newListRef.key;
+
+            //adding default category to new list in db
+            const dbNewListCategories = this.afDatabase.list(ItemsListPage.fireAllListsPath + "/" + newListRef.key + "/categories");
+            const newListCategoryRef = dbNewListCategories.push({});
+            const defaultCategory = Category.CATEGORY_WITHOUT_CATEGORY;
+            defaultCategory.id = newListCategoryRef.key;
+            defaultCategory.isDefault = true;
+            newListCategoryRef.set(defaultCategory);
         }
 
+        //creating new item as list
         const itemRef = this.dbCurrentItemList.push({});
         item.id = itemRef.key;
         itemRef.set(item);

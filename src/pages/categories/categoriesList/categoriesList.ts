@@ -101,20 +101,8 @@ export class CategoriesListPage implements OnInit {
     }
 
 
-    // updateItems4Category(category: Category) {
-    //     console.log("updateItems4Category: " + JSON.stringify(category));
-    //     this.itemsArray.filter(itm => itm.categoryName === category.name).map(itm => this.updateItemOrderInDB(itm, category.order));
-    // }
-
-
-    // updateItemOrderInDB(item: Item, newOrder: number) {
-    //     console.log("updateItemOrderInDB: " + JSON.stringify(item), newOrder);
-    //     this.dbCurrentItemList.update(item.id, {categoryOrder: newOrder});
-    // }
-
-
     goToNewCategoryPage() {
-        const maxOrderNo = this.categories[this.categories.length - 1].order;
+        const maxOrderNo = this.categories.length;
         this.navCtrl.push('NewCategoryPage', {categoryName: this.searchValue, dbCategories: this.dbCategories, maxOrderNo: maxOrderNo, clearSearchValueFn: this.clearSearchValueFn});
     }
 

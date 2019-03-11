@@ -15,6 +15,8 @@ import {ItemWithCategory} from "../../../model/itemWithCategory";
 })
 export class ItemsListPage implements OnInit {
 
+    public static fireAllListsPath = "/lists";
+
     dbAllLists: AngularFireList<any>;
     dbCurrentItemList: AngularFireList<any>;
     dbCategories: AngularFireList<any>;
@@ -42,13 +44,12 @@ export class ItemsListPage implements OnInit {
 
 
     ngOnInit() {
-        const fireAllListsPath = "/lists";
-        const fireCurrentListPath = fireAllListsPath + "/" + this.item.listRef;
+        const fireCurrentListPath = ItemsListPage.fireAllListsPath + "/" + this.item.listRef;
         const fireCurrentListItemsPath = fireCurrentListPath + "/items";
         const fireCurrentListCategoriesPath = fireCurrentListPath + "/categories";
 
+        this.dbAllLists = this.afDatabase.list(ItemsListPage.fireAllListsPath);
         this.dbCategories = this.afDatabase.list(fireCurrentListCategoriesPath);
-        this.dbAllLists = this.afDatabase.list(fireAllListsPath);
         this.dbCurrentItemList = this.afDatabase.list(fireCurrentListItemsPath);
 
         console.log("firePath: " + fireCurrentListPath);
@@ -90,7 +91,7 @@ export class ItemsListPage implements OnInit {
         console.log("items: ", this.items);
         console.log("categories: ", this.categories);
         this.itemsWithCategory = this.items.map(itm => {const itmWC = new ItemWithCategory(); itmWC.item = itm; return itmWC});
-        this.itemsWithCategory.map(itmWC => {const category = this.categories.find(ctgr => ctgr.id === itmWC.item.categoryId); itmWC.category = category ? category : Category.WITHOUT_CATEGORY; return itmWC});
+        this.itemsWithCategory.map(itmWC => {const category = this.categories.find(ctgr => ctgr.id === itmWC.item.categoryId); itmWC.category = category ? category : Category.CATEGORY_WITHOUT_CATEGORY; return itmWC});
         console.log("items with categories: ", this.itemsWithCategory);
     }
 

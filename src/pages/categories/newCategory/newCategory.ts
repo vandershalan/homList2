@@ -30,7 +30,7 @@ export class NewCategoryPage {
 
 
     addCategory() {
-        const category = new Category(this.categoryName, this.description, this.maxOrderNo + 1);
+        const category = new Category(this.categoryName, this.description, this.maxOrderNo);
 
         const categoryRef = this.dbCategories.push({});
         category.id = categoryRef.key;
