@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {DiacriticsRemoval} from "../../utils/DiacriticsRemoval";
-import {ItemWithCategory} from "../../model/itemWithCategory";
+import {ItemWithCategory} from "../../models/itemWithCategory";
 
 
 @Pipe({

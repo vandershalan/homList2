@@ -3,7 +3,7 @@ import {Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 
-import {Item, ItemType} from "../model/item";
+import {Item, ItemType} from "../models/item";
 
 @Component({
     templateUrl: 'app.html'

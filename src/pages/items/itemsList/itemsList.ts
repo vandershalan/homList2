@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, PopoverController, Events} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
-import {ListOptions} from "../../../model/listOptions";
-import {Item, ItemType} from "../../../model/item";
-import {Category} from "../../../model/category";
+import {ListOptions} from "../../../models/listOptions";
+import {Item, ItemType} from "../../../models/item";
+import {Category} from "../../../models/category";
 import {Subscription} from "rxjs";
 import {DiacriticsRemoval} from "../../../utils/DiacriticsRemoval";
-import {ItemWithCategory} from "../../../model/itemWithCategory";
+import {ItemWithCategory} from "../../../models/itemWithCategory";
 
 @IonicPage()
 @Component({

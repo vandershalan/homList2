@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {AngularFireList} from 'angularfire2/database';
-import {Category} from "../../../model/category";
+import {Category} from "../../../models/category";
 
 @IonicPage()
 @Component({

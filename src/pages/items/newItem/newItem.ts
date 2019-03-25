@@ -1,9 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Events} from 'ionic-angular';
-import {Item, ItemType} from "../../../model/item";
-import {List} from "../../../model/list";
+import {Item, ItemType} from "../../../models/item";
+import {List} from "../../../models/list";
 import {AngularFireList, AngularFireDatabase} from 'angularfire2/database';
-import {Category} from "../../../model/category";
+import {Category} from "../../../models/category";
 import {map} from "rxjs/operators";
 import {Subscription} from "rxjs";
 import {ItemsListPage} from "../itemsList/itemsList";

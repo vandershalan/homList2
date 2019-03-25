@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavParams, ViewController} from "ionic-angular";
-import {ListOptions} from "../../../model/listOptions";
+import {ListOptions} from "../../../models/listOptions";
 
 
 @IonicPage()
